@@ -1,3 +1,8 @@
+## Support the team on Ko-fi
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/thrasherrr)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/ouroborosrp)
+
 ## (v1.2) qb-prison:
 - Updated Prison Script for QB-Policejob Modified by IN1GHTM4R3
 - Forked & Modified to v1.2: Thrasherrr#9224
