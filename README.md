@@ -1,6 +1,9 @@
 ## Support the team on Ko-fi
 
+- Thrasherrr
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/thrasherrr)
+
+- xViperAG (OuroborsRP)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/ouroborosrp)
 
 ## (v1.2) qb-prison:
