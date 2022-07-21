@@ -8,33 +8,13 @@ local Shown = false
 
 -- Functions
 
-local function JobDone(data)
-    if math.random(1, 100) <= 50 then
-        QBCore.Functions.Notify(Lang:t("success.time_cut"))
-        jailTime = jailTime - math.random(1, 2)
-    end
-    local newLocation = math.random(1, #Config.Locations.jobs[currentJob])
-    while (newLocation == currentLocation) do
-        Wait(100)
-        newLocation = math.random(1, #Config.Locations.jobs[currentJob])
-    end
-    currentLocation = newLocation
-
-    local craftingitemchance = math.random(1,100) -- Crafting Item Chance
-
-    if craftingitemchance <= Config.CraftingItemChance then
-        TriggerEvent('qb-prison:client:GetCraftingItems', data)
-    end
-    CreatePrisonBlip()
-end
-
 function CreatePrisonBlip()
     if currentLocation ~= 0 then
         if DoesBlipExist(currentBlip) then
             RemoveBlip(currentBlip)
         end
-        currentBlip = AddBlipForCoord(Config.Locations.jobs[currentJob][currentLocation].coords.x, Config.Locations.jobs[currentJob][currentLocation].coords.y, Config.Locations.jobs[currentJob][currentLocation].coords.z)
-
+        local coords = Config.Locations.jobs[currentJob][currentLocation].coords.xyz
+        currentBlip = AddBlipForCoord(coords.x, coords.y, coords.z)
 
         SetBlipSprite (currentBlip, 402)
         SetBlipDisplay(currentBlip, 4)
@@ -54,6 +34,26 @@ function CreatePrisonBlip()
             QBCore.Functions.Notify(Lang:t("success.found_phone"), "success")
         end
     end
+end
+
+local function JobDone(data)
+    if math.random(1, 100) <= 50 then
+        jailTime = jailTime - math.random(1, 2)
+        QBCore.Functions.Notify("You worked some time off your sentence. Time Left: "..jailTime)
+    end
+    local newLocation = math.random(1, #Config.Locations.jobs[currentJob])
+    while newLocation == currentLocation do
+        Wait(100)
+        newLocation = math.random(1, #Config.Locations.jobs[currentJob])
+    end
+    currentLocation = newLocation
+
+    local craftingitemchance = math.random(1,100) -- Crafting Item Chance
+
+    if craftingitemchance <= Config.CraftingItemChance then
+        TriggerEvent('qb-prison:client:GetCraftingItems', data)
+    end
+    CreatePrisonBlip()
 end
 
 -- Threads
@@ -188,19 +188,19 @@ CreateThread(function()
                             AttachEntityToEntity(BroomObject, PlayerPedId(), bone1, -0.0100, 0.0400, -0.0300, 0.0, 0.0, 0.0, 1, 1, 0, 0, 2, 1)
                             isWorking = true
                             QBCore.Functions.Progressbar("work_electric", "Cleaning Up..", math.random(5000, 10000), false, true, {
-                                
-                                
+
+
                                 disableMovement = true,
                                 disableCarMovement = true,
                                 disableMouse = false,
                                 disableCombat = true,
-                                
+
                             }, {
 
                                 animDict = "anim@amb@drug_field_workers@rake@male_a@base",
                                 anim = "base",
                                 flags = 9,
-                                
+
                                 Prop = "prop_tool_broom",
                                 PropBone = 28422,
                                 PropPlacement = {-0.0100, 0.0400, -0.0300, 0.0, 0.0, 0.0},
@@ -209,7 +209,7 @@ CreateThread(function()
                                 shown = false
                                 inDistance = false
                                 exports['qb-core']:HideText()
-                                
+
                                 isWorking = false
                                 DeleteEntity(BroomObject) -- Removes the Broom From Hands
                                 StopAnimTask(PlayerPedId(), "anim@amb@drug_field_workers@rake@male_a@base", "base", 1.0)
@@ -237,6 +237,6 @@ CreateThread(function()
                 currentLocation = math.random(1, #Config.Locations.jobs[currentJob])
                 CreatePrisonBlip()
             end
-        end        
+        end
     end
 end)
