@@ -117,16 +117,6 @@ end
 -- RESOURCE START / PLAYER LOAD --
 -----------------------------------
 
-AddEventHandler('onResourceStart', function(resourceName)
-	QBCore.Functions.GetPlayerData(function(PlayerData)
-		if GetCurrentResourceName() == resourceName then
-			if PlayerData.metadata["injail"] > 0 then
-				TriggerEvent("prison:client:Enter", PlayerData.metadata["injail"])
-			end
-		end
-	end)
-end)
-
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 	QBCore.Functions.GetPlayerData(function(PlayerData)
 		if PlayerData.metadata["injail"] > 0 then
@@ -143,6 +133,23 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 	PlayerJob = QBCore.Functions.GetPlayerData().job
 end)
 
+AddEventHandler('onResourceStart', function(resourceName)
+    if resourceName ~= GetCurrentResourceName() then return end
+	Wait(100)
+	if LocalPlayer.state['isLoggedIn'] then
+		QBCore.Functions.GetPlayerData(function(PlayerData)
+			if PlayerData.metadata["injail"] > 0 then
+				TriggerEvent("prison:client:Enter", PlayerData.metadata["injail"])
+			end
+		end)
+	end
+
+	QBCore.Functions.TriggerCallback('prison:server:IsAlarmActive', function(active)
+		if not active then return end
+		TriggerEvent('prison:client:JailAlarm', true)
+	end)
+end)
+
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
 end)
@@ -151,17 +158,17 @@ end)
 -- RESOURCE STOP / PLAYER UNLOAD --
 ------------------------------------
 
-AddEventHandler('onResourceStop', function(resourceName)
-    if GetCurrentResourceName() == resourceName then
-		DestroyAllTargets()
-    end
-end)
-
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
 	inJail = false
 	currentJob = nil
 	RemoveBlip(currentBlip)
 	DestroyAllTargets()
+end)
+
+AddEventHandler('onResourceStop', function(resourceName)
+    if GetCurrentResourceName() == resourceName then
+		DestroyAllTargets()
+    end
 end)
 
 RegisterNetEvent('prison:client:Enter', function(time)
@@ -183,9 +190,9 @@ RegisterNetEvent('prison:client:Enter', function(time)
 
 	-- Code to Select Random Job
 	local randomJobIndex = math.random(1, #Config.PrisonJobs) -- Chooses Random Job
-   	local RandomJobSelection = Config.PrisonJobs[randomJobIndex].name	   
+   	local RandomJobSelection = Config.PrisonJobs[randomJobIndex].name
 	currentJob = RandomJobSelection -- "electrician" old code
-	
+
 	TriggerServerEvent("prison:server:SetJailStatus", jailTime)
 	TriggerServerEvent("prison:server:SaveJailItems", jailTime)
 	TriggerServerEvent("InteractSound_SV:PlayOnSource", "jail", 0.5)
@@ -366,7 +373,7 @@ RegisterNetEvent('qb-prison:jobapplyCook', function(args)
 				currentJob = "cook" --"electrician" old code
 				CreatePrisonBlip()
 				QBCore.Functions.Notify('New Job: Cook')
-				
+
 				if Config.Debug then
 					print("Job: Cook")
 				end
@@ -458,8 +465,8 @@ RegisterNetEvent('qb-prison:client:slushy', function()
 		if inJail then
 			Citizen.Wait(1000)
 			local ped = PlayerPedId()
-			local seconds = math.random(12,20)
-			local circles = math.random(4,8)
+			local seconds = math.random(15,20)
+			local circles = math.random(10,20)
 			local success = exports['qb-lock']:StartLockPickCircle(circles, seconds, success)
 			if success then
 				TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
@@ -502,29 +509,6 @@ function SlushyTime(success)
 
 end
 
-----------------------------------
--- JAIL ALARM -- PRISON BREAK --
-----------------------------------
-
-CreateThread(function()
-    TriggerEvent('prison:client:JailAlarm', false)
-	while true do
-		Wait(7)
-		if jailTime > 0 and inJail then
-			Wait(1000 * 60)
-			if jailTime > 0 and inJail then
-				jailTime = jailTime - 1
-				if jailTime <= 0 then
-					jailTime = 0
-					QBCore.Functions.Notify(Lang:t("success.timesup"), "success", 10000)
-				end
-				TriggerServerEvent("prison:server:SetJailStatus", jailTime)
-			end
-		else
-			Wait(5000)
-		end
-	end
-end)
 
 -------------------------------
 -- CRAFTING MENU AND EVENTS --
@@ -538,36 +522,36 @@ RegisterNetEvent('qb-prison:CraftingMenu', function()
 		isMenuHeader = true,
 	  },
 	}
-  
+
 	for k, v in pairs(Config.CraftingItems) do
 	  print(k, v)
 	  local item = {}
 	  local text = ""
-  
+
 	  item.header = k
 	  for k, v in pairs(v.materials) do
 		text = text .. "- " .. QBCore.Shared.Items[v.item].label .. ": " .. v.amount .. "x <br>"
 	  end
 	  item.text = text
-	  item.params = { 
-		event = 'qb-prison:CraftItem', 
-		args = { 
-		  item = k 
-		} 
+	  item.params = {
+		event = 'qb-prison:CraftItem',
+		args = {
+		  item = k
+		}
 	  }
-  
+
 	  table.insert(craftingheader, item)
 	end
-  
+
 	exports['qb-menu']:openMenu(craftingheader)
 end)
-  
+
 local function CraftItem(item)
-  
+
 	if Config.Debug then
 	  print(item, Config.CraftingItems[item].receive)
 	end
-  
+
 	QBCore.Functions.Progressbar('crafting_item', 'Crafting '..item, 5000, false, false, {
 		disableMovement = true,
 		disableCarMovement = true,
@@ -590,7 +574,7 @@ local function CraftItem(item)
 		QBCore.Functions.Notify('You have cancelled the crafting process', 'error')
 	end)
 end
-  
+
 -- Uses Callback to Check for Materials
 RegisterNetEvent('qb-prison:CraftItem', function(data)
 
@@ -619,7 +603,7 @@ RegisterNetEvent('qb-prison:client:GetCraftingItems', function(job)
 
 	elseif job == 'cook' then
 		local CookItem = math.random(1, #Config.CookItems)
-		TriggerServerEvent('qb-prison:server:GetCraftingItems', Config.CookItems[CookItem].item, Config.ShelvesItem[CookItem].amount)
+		TriggerServerEvent('qb-prison:server:GetCraftingItems', Config.CookItems[CookItem].item, Config.CookItems[CookItem].amount)
 
 		if Config.Debug then
 			print("Received "..Config.CookItems[CookItem].amount.."x "..Config.CookItems[CookItem].item.." from cooking")
@@ -650,7 +634,7 @@ RegisterNetEvent('qb-prison:PrisonTimeTarget', function()
 		minZ = 46.11,
 		maxZ = 47.01,
         }, {
-            options = { 
+            options = {
             {
                 type = "client",
                 event = "qb-prison:client:checkTime",
@@ -662,12 +646,6 @@ RegisterNetEvent('qb-prison:PrisonTimeTarget', function()
                 event = "qb-prison:client:jobMenu",
                 icon = "fas fa-cash-register",
                 label = "Choose Another Job",
-            },
-            {
-                type = "client",
-                event = "stx-phone:client:publocphoneopen",
-                icon = "fas fa-phone-alt",
-                label = "Public Phone",
             },
         },
         distance = 2,
@@ -689,7 +667,7 @@ RegisterNetEvent('qb-prison:CanteenTarget', function()
 		minZ = 45.40,
 		maxZ = 45.85,
         }, {
-            options = { 
+            options = {
             {
                 type = "client",
                 event = "qb-prison:client:useCanteen",
@@ -717,7 +695,7 @@ RegisterNetEvent('qb-prison:SlushyTarget', function()
 		minZ = 45.50,
 		maxZ = 46.75,
         }, {
-            options = { 
+            options = {
             {
                 type = "client",
                 event = "qb-prison:client:slushy",
@@ -744,7 +722,7 @@ RegisterNetEvent('qb-prison:PrisonCraftingTarget', function()
 		minZ = Config.CraftingLocation.z - 1,
 		maxZ = Config.CraftingLocation.z + 1,
         }, {
-            options = { 
+            options = {
             {
                 type = "client",
                 event = "qb-prison:CraftingMenu",
@@ -760,4 +738,29 @@ RegisterNetEvent('qb-prison:PrisonCraftingTarget', function()
     if Config.Debug then
         print('Prison Crafting Target Created')
     end
+end)
+
+----------------------------------
+-- JAIL ALARM -- PRISON BREAK --
+----------------------------------
+
+CreateThread(function()
+    TriggerEvent('prison:client:JailAlarm', false)
+	while true do
+		local sleep = 1000
+		if jailTime ~= nil and jailTime > 0 and inJail then
+			Wait(1000 * 60)
+			sleep = 0
+			if jailTime > 0 and inJail then
+				jailTime -= 1
+				if jailTime <= 0 then
+					jailTime = 0
+					QBCore.Functions.Notify(Lang:t("success.timesup"), "success", 10000)
+				end
+				TriggerServerEvent("prison:server:SetJailStatus", jailTime)
+			end
+		else
+			Wait(sleep)
+		end
+	end
 end)
