@@ -3,8 +3,8 @@
 ## - Thrasherrr
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/thrasherrr)
 
-## - xViperAG (OuroborosRP)
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/ouroborosrp)
+## - xViperAG
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/xviperag)
 
 ## (v1.2) qb-prison:
 - Updated Prison Script for QB-Policejob Modified by IN1GHTM4R3
