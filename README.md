@@ -31,12 +31,12 @@
 ## Installation:
 - Add slushy.png to your inventory/html/images folder
 - Add 'slushy' to qb-core/shared/items.lua
-```
+```lua
 ['slushy']                      = {['name'] = 'slushy',                     ['label'] = 'Slushy',                   ['weight'] = 750,       ['type'] = 'item',      ['image'] = 'slushy.png',       ['unique'] = true,      ['useable'] = true,     ['shouldClose'] = true,     ['combinable'] = nil,   ['description'] = 'A nice cold drink in the coldest place in San Andreas'},
 ```
 - Add to qb-smallreources/config.lua ```["slushy"] = math.random(35, 54),```
 - Add to qb-smallresources/server/consumables.lua
-```
+```lua
 QBCore.Functions.CreateUseableItem("slushy", function(source, item)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -51,7 +51,7 @@ end)
 
 ### Optional: If you have ps-buffs, add this to qb-smallresources/client/consumables.lua after the SetMetaData Server Event
 
-```
+```lua
         if itemName == "slushy" then
             exports['ps-buffs']:AddBuff("super-thirst", 25000)
         end
