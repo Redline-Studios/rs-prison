@@ -95,7 +95,7 @@ CreateThread(function()
                                 isWorking = false
                                 StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
                                 QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
-                            end)
+                            end, "fa-solid fa-bolt")
                         end
 
                         -- DrawText
@@ -148,7 +148,7 @@ CreateThread(function()
                                 StopAnimTask(PlayerPedId(), "amb@prop_human_bbq@male@idle_a", "idle_a", 1.0)
                                 QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
                                 ClearPedTasks(PlayerPedId())
-                            end)
+                            end, "fa-solid fa-fire-burner")
                         end
 
                         -- DrawText
@@ -219,7 +219,7 @@ CreateThread(function()
                                 StopAnimTask(PlayerPedId(), "anim@amb@drug_field_workers@rake@male_a@base", "base", 1.0)
                                 QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
                                 ClearPedTasks(PlayerPedId())
-                            end)
+                            end, "fa-solid fa-broom")
                         end
 
                         -- DrawText
