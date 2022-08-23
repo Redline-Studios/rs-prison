@@ -1,8 +1,9 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'QB-Prison'
-version '1.0.0'
+author 'xViperAG & xThrasherrr'
+description 'Custom Prison Script'
+version '1.3.0'
 
 shared_scripts {
     '@qb-core/shared/locale.lua',
