@@ -22,6 +22,7 @@
 - Additional Support for More UI
 - Additional Support for More Dispatches
 - Support for qb-prisonjobs by xThrasherrr
+- Additional Support for More Prisons
 
 -----------------------------------------------------------------------------------------------------------------
 
