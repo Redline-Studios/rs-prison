@@ -43,7 +43,39 @@ Config.Crafting = true -- Set to false to disable crafting or if you own qb-pris
 Config.CheckTimeLocation = vector3(1827.3, 2587.72, 46.01)
 Config.CraftingLocation = vector4(1669.21, 2566.56, 45.56, 270)
 Config.Lockers = {
-    { coords = vector4(1777.72, 2485.75, 45.74, 119.67), }, -- Test Locker
+
+    -- Cells 1 through 13
+
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 1
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 2
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 3
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 4
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 5
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 6
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 7
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 8
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 9
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 10
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 11
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 12
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 13
+
+    -- Cells 14 through 27
+
+    { coords = vector4(1777.72, 2485.75, 45.74, 119.67), }, -- Cell 14
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 15
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 16
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 17
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 18
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 19
+    { coords = vector4(1777.72, 2485.75, 45.74, 119.67), }, -- Cell 20
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 21
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 22
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 23
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 24
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 25
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 26
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 27
 }
 
 -----------------
