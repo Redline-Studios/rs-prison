@@ -99,6 +99,25 @@ QBCore.Functions.CreateCallback('prison:server:IsAlarmActive', function(source, 
     cb(AlarmActivated)
 end)
 
+-----------------------------
+-- REQUIRED CUP ITEM (WIP) --
+-----------------------------
+
+--[[QBCore.Functions.CreateCallback('prison:server:GetItemsNeeded', function(source, cb, item)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player ~= nil then 
+        local Drill = Player.Functions.GetItemByName(item)
+        if Drill ~= nil then
+            cb(true)
+        else
+            cb(false)
+        end
+    else
+        cb(false)
+    end
+end)]]--
+
 ---------------------
 -- CRAFTING ITEMS --
 ---------------------
