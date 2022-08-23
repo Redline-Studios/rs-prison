@@ -34,7 +34,7 @@ Config.QBLock = true
 
 Config.Debug = true -- Set to true for server/client prints
 Config.DebugPoly = true -- Set to true to debug PolyZones
-Config.Crafting = true -- Set to false to disable crafting
+Config.Crafting = true -- Set to false to disable crafting or if you own qb-prisonjobs
 
 ----------------------
 -- Location Configs --
