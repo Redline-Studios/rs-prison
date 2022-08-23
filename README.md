@@ -72,6 +72,59 @@ end)
 
 -----------------------------------------------------------------------------------------------------------------
 
+### Optional: If you have fivem-appearance, add this to your config.lua under Config.Outfits = {}
+
+Use your own numbers, but this is a baseline of what to look for.
+
+```lua
+    ["unemployed"] = {
+        ["male"] = {
+            {
+                name = "Prisoner",
+                outfitData = {
+                    ["arms"] = {item = 0, texture = 0}, -- Arms
+                    ["t-shirt"] = {item = 15, texture = 3}, -- T-Shirt
+                    ["torso2"] = {item = 167, texture = 0}, -- Jackets
+                    ["vest"] = {item = 0, texture = 0}, -- Vest
+                    ["decals"] = {item = 0, texture = 0}, -- Decals
+                    ["accessory"] = {item = 0, texture = 0}, -- Neck
+                    ["bag"] = {item = 0, texture = 0}, -- Bag
+                    ["pants"] = {item = 5, texture = 7}, -- Pants
+                    ["shoes"] = {item = 111, texture = 0}, -- Shoes
+                    ["mask"] = {item = 0, texture = 0}, -- Mask
+                    ["hat"] = {item = -1, texture = 0}, -- Hat
+                    ["glass"] = {item = 0, texture = 0}, -- Glasses
+                    ["ear"] = {item = 0, texture = 0} -- Ear accessories
+                },
+                grades = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+            },
+        },
+        ["female"] = {
+            {
+                name = "Prisoner",
+                outfitData = {
+                    ["arms"] = {item = 105, texture = 0}, -- Arms
+                    ["t-shirt"] = {item = 39, texture = 3}, -- T-Shirt
+                    ["torso2"] = {item = 7, texture = 1}, -- Jackets
+                    ["vest"] = {item = 0, texture = 0}, -- Vest
+                    ["decals"] = {item = 0, texture = 0}, -- Decals
+                    ["accessory"] = {item = 96, texture = 0}, -- Neck
+                    ["bag"] = {item = 0, texture = 0}, -- Bag
+                    ["pants"] = {item = 34, texture = 0}, -- Pants
+                    ["shoes"] = {item = 29, texture = 0}, -- Shoes
+                    ["mask"] = {item = 0, texture = 0}, -- Mask
+                    ["hat"] = {item = -1, texture = 0}, -- Hat
+                    ["glass"] = {item = 0, texture = 0}, -- Glasses
+                    ["ear"] = {item = 0, texture = 0} -- Ear accessories
+                },
+                grades = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+            },
+        },
+    },
+```
+
+-----------------------------------------------------------------------------------------------------------------
+
 ## Future Updates / WIP: 
 - Prison Lifer Job (Work In Progress)
 - Create CitizenID Table for Lifers - They will not get time reduction
@@ -85,6 +138,7 @@ end)
 - qb-menu https://github.com/qbcore-framework/qb-menu
 - qb-lock https://github.com/Tex27/qb-lock
 - OPTIONAL FOR PRISON SHIV: Custom-Weapons https://github.com/NoobySloth/Custom-Weapons
+- OPTIONAL FOR JOB CLOTHING: fivem-appearance https://github.com/iLLeniumStudios/fivem-appearance
 
 -----------------------------------------------------------------------------------------------------------------
 
