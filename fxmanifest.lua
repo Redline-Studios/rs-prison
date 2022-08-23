@@ -11,11 +11,7 @@ shared_scripts {
 }
 
 
-client_scripts {
-	'client/main.lua',
-	'client/jobs.lua',
-	'client/prisonbreak.lua'
-}
+client_script 'client/*.lua'
 
 server_script 'server/main.lua'
 
