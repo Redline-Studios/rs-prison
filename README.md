@@ -6,9 +6,22 @@
 ## - xViperAG
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/xviperag)
 
-## (v1.2) qb-prison:
+## (v1.3) qb-prison:
 - Updated Prison Script for QB-Policejob Modified by IN1GHTM4R3
-- Forked & Modified to v1.2: Thrasherrr#9224
+- Forked & Modified to v1.3: Thrasherrr#9224 and xViperAG#3029
+
+-----------------------------------------------------------------------------------------------------------------
+
+# Just Added v1.3:
+- Added Lockers (Gabz Prison)
+- Added New Spawn Locations (Gabz Prison)
+- Added Soda Machine and Coffee Machine
+- Redefined Config.Lua for more customization
+
+## Work In Progress v1.3
+- Additional Support for More UI
+- Additional Support for More Dispatches
+- Support for qb-prisonjobs by xThrasherrr
 
 -----------------------------------------------------------------------------------------------------------------
 
