@@ -1,12 +1,54 @@
 Config = {}
 
-Config.PSDispatch = true
+----------------------
+-- Dispatch Configs --
+----------------------
+
+Config.PSDispatch = true -- Set to true for using ps-dispatch
+--[[
+
+COMING SOON!
+
+Config.CoreDispatch = false
+Config.CDDispatch = false
+
+]]--
+
+-------------------------
+-- Interaction Configs --
+-------------------------
+
+--[[
+
+COMING SOON!
+
+Config.PSUI = false
+Config.QBSkillbar = false
+Config.QBLock = true
+
+]]--
+
+-------------------
+-- Debug Configs --
+-------------------
+
 Config.Debug = true -- Set to true for server/client prints
 Config.DebugPoly = true -- Set to true to debug PolyZones
 Config.Crafting = true -- Set to false to disable crafting
 
+----------------------
+-- Location Configs --
+----------------------
+
 Config.CheckTimeLocation = vector3(1827.3, 2587.72, 46.01)
 Config.CraftingLocation = vector4(1669.21, 2566.56, 45.56, 270)
+Config.Lockers = {
+    { coords = vector4(1777.72, 2485.75, 45.74, 119.67), }, -- Test Locker
+}
+
+-----------------
+-- Job Configs --
+-----------------
 
 Config.Jobs = {
     ["electrician"] = "Electrician",
@@ -30,6 +72,10 @@ Config.PrisonJobs = {
 }
 
 Config.PrisonWage = 10
+
+----------------------------
+-- Basic Location Configs --
+----------------------------
 
 Config.Locations = {
     jobs = {
@@ -163,6 +209,10 @@ Config.Locations = {
     }
 }
 
+---------------------
+-- Canteen Configs --
+---------------------
+
 Config.CanteenItems = {
     [1] = {
         name = "sandwich",
@@ -172,14 +222,6 @@ Config.CanteenItems = {
         type = "item",
         slot = 1
     },
-    [2] = {
-        name = "water_bottle",
-        price = 4,
-        amount = 50,
-        info = {},
-        type = "item",
-        slot = 2
-    }
 }
 
 Config.SlushyItems = {
@@ -193,8 +235,38 @@ Config.SlushyItems = {
     },
 }
 
+Config.SodaItems = {
+    [1] = {
+        name = "kurkakola",
+        price = 35,
+        amount = 1,
+        info = {},
+        type = "item",
+        slot = 1
+    },
+        [2] = {
+        name = "water_bottle",
+        price = 4,
+        amount = 50,
+        info = {},
+        type = "item",
+        slot = 2
+    }
+}
+
+Config.CoffeeItems = {
+    [1] = {
+        name = "coffee",
+        price = 35,
+        amount = 1,
+        info = {},
+        type = "item",
+        slot = 1
+    },
+}
+
 ----------------------
--- CRAFTING CONFIG --
+-- Crafting Configs --
 ----------------------
 
 -- Chance to receive crafting items
@@ -247,8 +319,8 @@ Config.CraftingItems = {
     ["Prison Shank"] = {
         materials = {
             [1] = {
-               item = "steel",
-               amount = 20
+                item = "steel",
+                amount = 20
             },
             [2] = {
                 item = "rubber",
