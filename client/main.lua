@@ -17,6 +17,13 @@ local prisoncraftingTarget = false
 
 local inRange = false
 
+local function GetJailTime()
+	if Config.QB_PrisonJobs then
+		return jailTime
+	end
+end
+exports('GetJailTime', GetJailTime)
+
 local function CreateCellsBlip()
 	if CellsBlip ~= nil then
 		RemoveBlip(CellsBlip)
@@ -204,6 +211,7 @@ RegisterNetEvent('prison:client:Enter', function(time)
 	TriggerServerEvent("prison:server:SetJailStatus", jailTime)
 	TriggerServerEvent("prison:server:SaveJailItems", jailTime)
 	TriggerServerEvent("InteractSound_SV:PlayOnSource", "jail", 0.5)
+	GetJailTime()
 	CreateCellsBlip()
 	CreateAllTargets()
 	Wait(2000)
@@ -992,6 +1000,9 @@ CreateThread(function()
 					QBCore.Functions.Notify(Lang:t("success.timesup"), "success", 10000)
 				end
 				TriggerServerEvent("prison:server:SetJailStatus", jailTime)
+
+				GetJailTime()
+
 			end
 		else
 			Wait(sleep)
