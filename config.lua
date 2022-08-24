@@ -56,6 +56,12 @@ Config.Gabz = true -- Set to true if using cfx-gabz-prison
 
 Config.QB_PrisonJobs = true -- Set to true if using qb-prisonjobs
 
+-----------------------
+-- Remove Job Config --
+-----------------------
+
+Config.RemoveJobs = false -- Set to true if you don't want to remove player's job.
+
 -------------------
 -- Debug Configs --
 -------------------
