@@ -75,7 +75,13 @@ CreateThread(function()
                         event = "prison:stash",
                         icon = "fas fa-box-open",
                         label = "Open Prisoner Stash",
-                        job = 'unemployed',
+                        canInteract = function()
+                            if inJail then
+                                return true
+                            else 
+                                return false
+                            end
+                        end,
                     },
                     {
                         type = "client",
@@ -116,7 +122,13 @@ CreateThread(function()
                         event = "prison:stash",
                         icon = "fas fa-box-open",
                         label = "Open Prisoner Stash",
-                        job = 'unemployed',
+                        canInteract = function()
+                            if inJail then
+                                return true
+                            else 
+                                return false
+                            end
+                        end,
                     },
                     {
                         type = "client",
