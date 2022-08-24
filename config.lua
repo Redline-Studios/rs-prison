@@ -38,8 +38,8 @@ COMING SOON!
 
 Config.PSUICircle_Soda = false -- Set to true for using PS-UI Circle
 Config.PSUISquare_Soda = false -- Set to true for using PS-UI Square
-Config.QBSkillbar_Slush = false -- Set to true for using qb-skillbar
-Config.QBLock_Slush = true -- Set to true for using qb-lock
+Config.QBSkillbar_Soda = false -- Set to true for using qb-skillbar
+Config.QBLock_Soda = true -- Set to true for using qb-lock
 
 ]]--
 
