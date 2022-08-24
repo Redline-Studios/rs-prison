@@ -20,6 +20,7 @@ local Translations = {
     info = {
         ["timeleft"] = "You still have to... %{JAILTIME} months",
         ["lost_job"] = "You're Unemployed",
+        ["sent_jail"] = "You've been sent to jail, but kept your job. Nice!",
     }
 }
 Lang = Locale:new({
