@@ -50,6 +50,11 @@ Config.QBLock_Soda = true -- Set to true for using qb-lock
 -- Config.QBCore = false -- Set to true if using QBCore's prison_map
 Config.Gabz = true -- Set to true if using cfx-gabz-prison
 
+--------------------------------
+-- QB-PrisonJobs Script Usage --
+--------------------------------
+
+Config.QB_PrisonJobs = true -- Set to true if using qb-prisonjobs
 
 -------------------
 -- Debug Configs --
