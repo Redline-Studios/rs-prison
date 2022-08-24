@@ -9,22 +9,37 @@ Config.PSDispatch = true -- Set to true for using ps-dispatch
 
 COMING SOON!
 
-Config.CoreDispatch = false
-Config.CDDispatch = false
+Config.CoreDispatch = false -- Set to true for using Core_Dispatch
+Config.CDDispatch = false -- Set to true for using cd
 
 ]]--
 
--------------------------
--- Interaction Configs --
--------------------------
+-----------------------------
+-- Slushy Minigame Configs --
+-----------------------------
 
 --[[
 
 COMING SOON!
 
-Config.PSUI = false
-Config.QBSkillbar = false
-Config.QBLock = true
+Config.PSUI_Slush = false
+Config.QBSkillbar_Slush = false
+Config.QBLock_Slush = true
+
+]]--
+
+---------------------------
+-- Soda Minigame Configs --
+---------------------------
+
+--[[
+
+COMING SOON!
+
+Config.PSUICircle_Soda = false
+Config.PSUISquare_Soda = false
+Config.QBSkillbar_Slush = false
+Config.QBLock_Slush = true
 
 ]]--
 
@@ -32,14 +47,9 @@ Config.QBLock = true
 -- Map Configs --
 -----------------
 
---[[
-
-COMING SOON!
-
-Config.QBCore = false
+-- Config.QBCore = false
 Config.Gabz = true
 
-]]--
 
 -------------------
 -- Debug Configs --
