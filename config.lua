@@ -10,7 +10,7 @@ Config.PSDispatch = true -- Set to true for using ps-dispatch
 COMING SOON!
 
 Config.CoreDispatch = false -- Set to true for using Core_Dispatch
-Config.CDDispatch = false -- Set to true for using cd
+Config.CDDispatch = false -- Set to true for using cd-dispatch
 
 ]]--
 
@@ -22,9 +22,9 @@ Config.CDDispatch = false -- Set to true for using cd
 
 COMING SOON!
 
-Config.PSUI_Slush = false
-Config.QBSkillbar_Slush = false
-Config.QBLock_Slush = true
+Config.PSUI_Slush = false -- Set to true for using PS-UI
+Config.QBSkillbar_Slush = false -- Set to true for using qb-skillbar
+Config.QBLock_Slush = true -- Set to true for using qb-lock
 
 ]]--
 
@@ -36,10 +36,10 @@ Config.QBLock_Slush = true
 
 COMING SOON!
 
-Config.PSUICircle_Soda = false
-Config.PSUISquare_Soda = false
-Config.QBSkillbar_Slush = false
-Config.QBLock_Slush = true
+Config.PSUICircle_Soda = false -- Set to true for using PS-UI Circle
+Config.PSUISquare_Soda = false -- Set to true for using PS-UI Square
+Config.QBSkillbar_Slush = false -- Set to true for using qb-skillbar
+Config.QBLock_Slush = true -- Set to true for using qb-lock
 
 ]]--
 
@@ -47,8 +47,8 @@ Config.QBLock_Slush = true
 -- Map Configs --
 -----------------
 
--- Config.QBCore = false
-Config.Gabz = true
+-- Config.QBCore = false -- Set to true if using QBCore's prison_map
+Config.Gabz = true -- Set to true if using cfx-gabz-prison
 
 
 -------------------
