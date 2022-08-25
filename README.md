@@ -144,7 +144,7 @@ Use your own numbers, but this is a baseline of what to look for.
 -----------------------------------------------------------------------------------------------------------------
 
 ## Credits:
-- IN1GHTM4R3 - The original idea
+- IN1GHTM4R3 - https://github.com/IN1GHTM4R3/qb-prison - The Original Resource
 - Primal#4155 - Original Targeting
 - xViperAG https://github.com/xViperAG - Picked up the project!
 - NoobySloth - Created Prison Shank Model
