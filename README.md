@@ -140,6 +140,12 @@ Use your own numbers, but this is a baseline of what to look for.
 - qb-lock https://github.com/Tex27/qb-lock
 - OPTIONAL FOR PRISON SHIV: Custom-Weapons https://github.com/NoobySloth/Custom-Weapons
 - OPTIONAL FOR JOB CLOTHING: fivem-appearance https://github.com/iLLeniumStudios/fivem-appearance
+- OPTIONAL FOR CONFIG:
+	- ps-ui https://github.com/Project-Sloth/ps-ui
+	- qb-skillbar https://github.com/qbcore-framework/qb-skillbar
+	- qb-prisonjobs https://thrasherrrdev.tebex.io/package/5226873
+	- QBCore prison_map https://github.com/qbcore-framework/prison_map (WORK IN PROGRESS)
+	- Gabz Prison https://fivem.gabzv.com/package/4724793 (Set Up)
 
 -----------------------------------------------------------------------------------------------------------------
 
