@@ -11,42 +11,36 @@ RegisterNetEvent('prison:stash', function()
     end
 end)
 
---------------------------------------
--- PRISON STASH (POLICE FORCE OPEN) --
---------------------------------------
+------------------------------------------
+-- PRISON STASH (POLICE FORCE OPEN) WIP --
+------------------------------------------
 
---[[RegisterNetEvent('prison:OpenLocker', function(data)
-    local prisonStash = data.currentEvidence
-    local pos = GetEntityCoords(PlayerPedId())
-    local takeLoc = Config.Locations["evidence"][currentEvidence]
+--[[
 
-    if not takeLoc then return end
-
-    if #(pos - takeLoc) <= 1.0 then
-        local drawer = exports['qb-input']:ShowInput({
-            header = Lang:t('info.prison_stash', {value = prisonStash}),
-            submitText = "Open Locker",
-            inputs = {
-                {
-                    type = 'number',
-                    isRequired = true,
-                    name = 'slot',
-                    text = Lang:t('info.slot')
-                }
+RegisterNetEvent('prison:OpenLocker', function(data)
+    local prisonStash = QBCore.Functions.GetPlayerData().citizenid
+    local locker = exports['qb-input']:ShowInput({
+        header = Lang:t('info.prison_stash'),
+        submitText = "Open Locker",
+        inputs = {
+            {
+                type = 'text',
+                isRequired = true,
+                name = 'slot',
+                text = Lang:t('info.slot')
             }
-        })
-        if drawer then
-            if not drawer.slot then return end
-            TriggerServerEvent("inventory:server:OpenInventory", "stash", Lang:t('info.current_evidence', {value = currentEvidence, value2 = drawer.slot}), {
-                maxweight = 4000000,
-                slots = 500,
-            })
-            TriggerEvent("inventory:client:SetCurrentStash", Lang:t('info.current_evidence', {value = currentEvidence, value2 = drawer.slot}))
-        end
+        }
+    })
+    if locker then
+        if not locker.slot then return end
+        TriggerServerEvent("inventory:server:OpenInventory", "stash", "prisonstash_"..prisonStash)
+        TriggerEvent("inventory:client:SetCurrentStash", "prisonstash_"..prisonStash)
     else
         exports['qb-menu']:closeMenu()
     end
-end)]]--
+end)
+
+]]--
 
 -------------------
 -- LOCKER THREAD --
