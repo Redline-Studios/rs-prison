@@ -19,12 +19,29 @@ Config.CDDispatch = false -- Set to true for using cd-dispatch
 -----------------------------
 
 --[[
-
 COMING SOON!
 
-Config.PSUI_Slush = false -- Set to true for using PS-UI
-Config.QBSkillbar_Slush = false -- Set to true for using qb-skillbar
-Config.QBLock_Slush = true -- Set to true for using qb-lock
+Config.SlushyMiniGame = {
+    -- PS-UI MINIGAMES --
+    PSCircle = {
+        enable = true,
+        circles = ,
+        time =
+    },
+
+    -- QB MINIGAMES --
+    QBSkillbar = {
+        enable = false,
+        duration = , -- how long the skillbar runs for
+        pos = , -- how far to the right the static box is
+        width = , -- how wide the static box is
+    },
+    QBLock = {
+        enable = false,
+        circles = ,
+        time =
+    },
+}
 
 ]]--
 
@@ -36,10 +53,33 @@ Config.QBLock_Slush = true -- Set to true for using qb-lock
 
 COMING SOON!
 
-Config.PSUICircle_Soda = false -- Set to true for using PS-UI Circle
-Config.PSUISquare_Soda = false -- Set to true for using PS-UI Square
-Config.QBSkillbar_Soda = false -- Set to true for using qb-skillbar
-Config.QBLock_Soda = true -- Set to true for using qb-lock
+Config.SodaMiniGame = {
+    -- PS-UI MINIGAMES --
+    PSThermite = {
+        enable = false,
+        time = ,
+        grid = ,
+        incorrect =
+    },
+    PSCircle = {
+        enable = true,
+        circles = ,
+        time =
+    },
+
+    -- QB MINIGAMES --
+    QBSkillbar = {
+        enable = false,
+        duration = , -- how long the skillbar runs for
+        pos = , -- how far to the right the static box is
+        width = , -- how wide the static box is
+    },
+    QBLock = {
+        enable = false,
+        circles = ,
+        time =
+    },
+}
 
 ]]--
 
