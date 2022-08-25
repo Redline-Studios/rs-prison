@@ -66,8 +66,8 @@ Config.RemoveJobs = false -- Set to true if you don't want to remove player's jo
 -- Debug Configs --
 -------------------
 
-Config.Debug = true -- Set to true for server/client prints
-Config.DebugPoly = true -- Set to true to debug PolyZones
+Config.Debug = false -- Set to true for server/client prints
+Config.DebugPoly = false -- Set to true to debug PolyZones
 Config.Crafting = true -- Set to false to disable crafting or if you own qb-prisonjobs
 
 ----------------------
@@ -112,6 +112,43 @@ Config.Lockers = {
     { coords = vector4(1777.72, 2485.75, 49.69, 119.67), }, -- Cell 27
 
 }
+
+--[[Config.LockersQB = {
+
+    -- Cells 1 through 13
+
+    { coords = vector4(1767.07, 2498.49, 45.74, 299.67), }, -- Cell 1
+    { coords = vector4(1763.95, 2496.63, 45.74, 299.67), }, -- Cell 2
+    { coords = vector4(1760.8, 2494.82, 45.74, 299.67), }, -- Cell 3
+    { coords = vector4(1754.55, 2491.2, 45.74, 299.67), }, -- Cell 4
+    { coords = vector4(1751.38, 2489.34, 45.74, 299.67), }, -- Cell 5
+    { coords = vector4(1748.22, 2487.55, 45.74, 299.67), }, -- Cell 6
+    { coords = vector4(1767.07, 2498.49, 49.69, 299.67), }, -- Cell 7
+    { coords = vector4(1763.95, 2496.63, 49.69, 299.67), }, -- Cell 8
+    { coords = vector4(1760.8, 2494.82, 49.69, 299.67), }, -- Cell 9
+    { coords = vector4(1757.66, 2493.0, 49.69, 299.67), }, -- Cell 10
+    { coords = vector4(1754.55, 2491.2, 49.69, 299.67), }, -- Cell 11
+    { coords = vector4(1751.38, 2489.34, 49.69, 299.67), }, -- Cell 12
+    { coords = vector4(1748.22, 2487.55, 49.69, 299.67), }, -- Cell 13
+
+    -- Cells 14 through 27
+
+    { coords = vector4(1758.76, 2474.95, 45.74, 119.67), }, -- Cell 14
+    { coords = vector4(1761.95, 2476.74, 45.74, 119.67), }, -- Cell 15
+    { coords = vector4(1765.09, 2478.56, 45.74, 119.67), }, -- Cell 16
+    { coords = vector4(1768.21, 2480.42, 45.74, 119.67), }, -- Cell 17
+    { coords = vector4(1771.38, 2482.2, 45.74, 119.67), }, -- Cell 18
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 19
+    { coords = vector4(1777.72, 2485.75, 45.74, 119.67), }, -- Cell 20
+    { coords = vector4(1758.76, 2474.95, 49.69, 119.67), }, -- Cell 21
+    { coords = vector4(1761.95, 2476.74, 49.69, 119.67), }, -- Cell 22
+    { coords = vector4(1765.09, 2478.56, 49.69, 119.67), }, -- Cell 23
+    { coords = vector4(1768.21, 2480.42, 49.69, 119.67), }, -- Cell 24
+    { coords = vector4(1771.38, 2482.2, 49.69, 119.67), }, -- Cell 25
+    { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 26
+    { coords = vector4(1777.72, 2485.75, 49.69, 119.67), }, -- Cell 27
+
+}]]--
 
 -----------------
 -- Job Configs --
