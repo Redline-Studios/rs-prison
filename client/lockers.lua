@@ -24,15 +24,14 @@ RegisterNetEvent('prison:OpenLocker', function(data)
         submitText = "Open Locker",
         inputs = {
             {
+                text = Lang:t('info.slot'),
+                name = 'citizenid',
                 type = 'text',
                 isRequired = true,
-                name = 'slot',
-                text = Lang:t('info.slot')
             }
         }
     })
     if locker then
-        if not locker.slot then return end
         TriggerServerEvent("inventory:server:OpenInventory", "stash", "prisonstash_"..prisonStash)
         TriggerEvent("inventory:client:SetCurrentStash", "prisonstash_"..prisonStash)
     else
