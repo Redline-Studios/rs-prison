@@ -19,30 +19,30 @@ Config.CDDispatch = false -- Set to true for using cd-dispatch
 -----------------------------
 
 Config.SlushyMiniGame = {
-    -- PS-UI MINIGAMES --
+    -- PS - UI MINIGAMES --
     PSThermite = {
-        enable = false,
-        time = 10,
+        enabled = false,
+        time = 20,
         grid = 5,
-        incorrect = 3
+        incorrect = 5
     },
     PSCircle = {
-        enable = true,
-        circles = 5,
-        time = 10
+        enabled = false,
+        circles = 3,
+        time = 15
     },
 
     -- QB MINIGAMES --
     QBSkillbar = {
-        enable = false,
-        duration = 300, -- how long the skillbar runs for
-        pos = 250, -- how far to the right the static box is
-        width = 400, -- how wide the static box is
+        enabled = false,
+        duration = math.random(3000, 5000), -- How long the skillbar runs for
+        pos = math.random(10, 30), -- How far to the right the static box is
+        width = math.random(5, 15), -- How wide the static box is
     },
     QBLock = {
-        enable = false,
-        circles = 5,
-        time = 10
+        enabled = true,
+        circles = 3,
+        time = 15
     },
 }
 
@@ -51,30 +51,30 @@ Config.SlushyMiniGame = {
 ---------------------------
 
 Config.SodaMiniGame = {
-    -- PS-UI MINIGAMES --
+    -- PS - UI MINIGAMES --
     PSThermite = {
-        enable = false,
-        time = 10,
+        enabled = false,
+        time = 20,
         grid = 5,
-        incorrect = 3
+        incorrect = 5
     },
     PSCircle = {
-        enable = true,
-        circles = 5,
-        time = 10
+        enabled = false,
+        circles = 3,
+        time = 15
     },
 
     -- QB MINIGAMES --
     QBSkillbar = {
-        enable = false,
-        duration = 300, -- how long the skillbar runs for
-        pos = 250, -- how far to the right the static box is
-        width = 400, -- how wide the static box is
+        enabled = false,
+        duration = math.random(3000, 5000), -- How long the skillbar runs for
+        pos = math.random(10, 30), -- How far to the right the static box is
+        width = math.random(5, 15), -- How wide the static box is
     },
     QBLock = {
-        enable = false,
-        circles = 5,
-        time = 10
+        enabled = true,
+        circles = 3,
+        time = 15
     },
 }
 
