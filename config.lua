@@ -18,70 +18,65 @@ Config.CDDispatch = false -- Set to true for using cd-dispatch
 -- Slushy Minigame Configs --
 -----------------------------
 
---[[
-COMING SOON!
-
 Config.SlushyMiniGame = {
     -- PS-UI MINIGAMES --
+    PSThermite = {
+        enable = false,
+        time = 10,
+        grid = 5,
+        incorrect = 3
+    },
     PSCircle = {
         enable = true,
-        circles = ,
-        time =
+        circles = 5,
+        time = 10
     },
 
     -- QB MINIGAMES --
     QBSkillbar = {
         enable = false,
-        duration = , -- how long the skillbar runs for
-        pos = , -- how far to the right the static box is
-        width = , -- how wide the static box is
+        duration = 300, -- how long the skillbar runs for
+        pos = 250, -- how far to the right the static box is
+        width = 400, -- how wide the static box is
     },
     QBLock = {
         enable = false,
-        circles = ,
-        time =
+        circles = 5,
+        time = 10
     },
 }
-
-]]--
 
 ---------------------------
 -- Soda Minigame Configs --
 ---------------------------
 
---[[
-
-COMING SOON!
-
 Config.SodaMiniGame = {
     -- PS-UI MINIGAMES --
     PSThermite = {
         enable = false,
-        time = ,
-        grid = ,
-        incorrect =
+        time = 10,
+        grid = 5,
+        incorrect = 3
     },
     PSCircle = {
         enable = true,
-        circles = ,
-        time =
+        circles = 5,
+        time = 10
     },
 
     -- QB MINIGAMES --
     QBSkillbar = {
         enable = false,
-        duration = , -- how long the skillbar runs for
-        pos = , -- how far to the right the static box is
-        width = , -- how wide the static box is
+        duration = 300, -- how long the skillbar runs for
+        pos = 250, -- how far to the right the static box is
+        width = 400, -- how wide the static box is
     },
     QBLock = {
         enable = false,
-        circles = ,
-        time =
+        circles = 5,
+        time = 10
     },
 }
-
-]]--
 
 -----------------
 -- Map Configs --
