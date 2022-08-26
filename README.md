@@ -155,6 +155,7 @@ Use your own numbers, but this is a baseline of what to look for.
 - xViperAG https://github.com/xViperAG - Picked up the project!
 - NoobySloth - Created Prison Shank Model
 - QB-Core Framework - For creating the framework!
+- Jimathy666 - Inspiration on the Locker Spawn (jim-mechanic)
 
 -----------------------------------------------------------------------------------------------------------------
 
