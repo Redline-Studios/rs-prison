@@ -78,6 +78,12 @@ Config.SodaMiniGame = {
     },
 }
 
+-------------------
+-- Workout Delay --
+-------------------
+
+Config.Delay = 5
+
 -----------------
 -- Map Configs --
 -----------------
