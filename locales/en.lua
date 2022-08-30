@@ -10,6 +10,7 @@ local Translations = {
         ["item_missing"] = "You are missing an Item..",
         ["escaped"] = "You escaped... Get the hell out of here.!",
         ["do_some_work"] = "Do some work for sentence reduction, instant job: %{currentjob} ",
+        ["workout_breather"] = "Take five and breathe. No need to stress.",
     },
     success = {
         ["found_phone"] = "You found a phone..",
