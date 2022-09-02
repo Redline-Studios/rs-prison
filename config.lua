@@ -648,7 +648,7 @@ Config.ElectricianItems = { -- Items found when fixing electrical
 }
 
 -- Crafting Menu
-Config.CraftingItems = { 
+Config.CraftingItems = {
 
     ----------------------------------------------------------
 
@@ -671,7 +671,8 @@ Config.CraftingItems = {
 
     ----------------------------------------------------------
 
-    ["Prison Shank"] = {
+    [1] = {
+        receive = "weapon_shiv",
         materials = {
             [1] = {
                 item = "steel",
@@ -682,10 +683,10 @@ Config.CraftingItems = {
                 amount = 20
             },
         },
-        receive = "weapon_shiv"
     },
 
-    ["Trojan USB"] = {
+    [2] = {
+        receive = "trojan_usb",
         materials = {
             [1] = {
                 item = "steel",
@@ -696,10 +697,10 @@ Config.CraftingItems = {
                 amount = 15
             },
         },
-        receive = "trojan_usb" 
     },
 
-    ["Advanced Lockpick"] = {
+    [3] = {
+        receive = "advancedlockpick",
         materials = {
             [1] = {
                 item = "lockpick",
@@ -714,16 +715,15 @@ Config.CraftingItems = {
                 amount = 15
             },
         },
-        receive = "advancedlockpick"
     },
 
-    ["Lockpick"] = {
+    [4] = {
+        receive = "lockpick",
         materials = {
             [1] = {
                 item = "metalscrap",
                 amount = 15
-            },          
+            },
         },
-        receive = "lockpick"
     }
 }
