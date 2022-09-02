@@ -8,6 +8,7 @@ ShopBlip = nil
 WorkBlip = nil
 PlayerJob = {}
 
+local sharedItems = QBCore.Shared.Items
 local canteenTarget = false
 local prisontimeTarget = false
 local slushyTarget = false
@@ -292,11 +293,13 @@ RegisterNetEvent('qb-prison:client:jobMenu', function()
 		pjobMenu = {
 			{
 				isHeader = true,
-				header = 'Prison Work'
+				header = 'Prison Work',
+				isMenuHeader = true
 			},
 			{
 				header = "Electrician",
 				txt = "Fix Electrical Boxes",
+				icon = "fas fa-bolt",
 				params = {
 					isServer = false,
 					event = "qb-prison:jobapplyElectrician",
@@ -305,6 +308,7 @@ RegisterNetEvent('qb-prison:client:jobMenu', function()
 			{
 				header = "Cook",
 				txt = "Cook Food",
+				icon = "fas fa-utensils",
 				params = {
 					isServer = false,
 					event = "qb-prison:jobapplyCook",
@@ -313,6 +317,7 @@ RegisterNetEvent('qb-prison:client:jobMenu', function()
 			{
 				header = "Janitor",
 				txt = "Clean Common Area",
+				icon = "fas fa-broom",
 				params = {
 					isServer = false,
 					event = "qb-prison:jobapplyJanitor",
@@ -321,6 +326,7 @@ RegisterNetEvent('qb-prison:client:jobMenu', function()
 			{
 				header = "Close Menu",
 				txt = "Close Menu",
+				icon = "fas fa-x",
 				params = {
 					isServer = false,
 					event = exports['qb-menu']:closeMenu(),
@@ -854,7 +860,7 @@ RegisterNetEvent('qb-prison:CraftingMenu', function()
 	  local item = {}
 	  local text = ""
 
-	  item.header = k
+	  item.header = sharedItems[v.receive].label
 	  for k, v in pairs(v.materials) do
 		text = text .. "- " .. QBCore.Shared.Items[v.item].label .. ": " .. v.amount .. "x <br>"
 	  end
