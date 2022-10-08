@@ -1,5 +1,5 @@
-local currentLocation = 0
 currentBlip = nil
+local currentLocation = 0
 local isWorking = false
 
 -- QBCore DrawText
@@ -84,7 +84,7 @@ CreateThread(function()
                                 anim = "hotwire",
                                 flags = 9,
                             }, {}, {}, function() -- Done
-                                shown = false
+                                Shown = false
                                 inDistance = false
                                 exports['qb-core']:HideText()
 
@@ -98,14 +98,17 @@ CreateThread(function()
                             end, "fa-solid fa-bolt")
                         end
 
-                        -- DrawText
-                        if not shown and inDistance then
-                            exports['qb-core']:DrawText('[E] Fix Electrical')
-                            shown = true
-                        elseif shown and not inDistance then
-                            exports['qb-core']:HideText()
-                            shown = false
-                        end
+                    else
+                        inDistance = false
+                    end
+
+                    -- DrawText
+                    if not Shown and inDistance then
+                        exports['qb-core']:DrawText('[E] Fix Electrical')
+                        Shown = true
+                    elseif Shown and not inDistance then
+                        exports['qb-core']:HideText()
+                        Shown = false
                     end
                 end
             else
@@ -136,7 +139,7 @@ CreateThread(function()
                                 flags = 9,
                                 prop = "",
                             }, {}, {}, function() -- Done
-                                shown = false
+                                Shown = false
                                 inDistance = false
                                 exports['qb-core']:HideText()
 
@@ -150,15 +153,17 @@ CreateThread(function()
                                 ClearPedTasks(PlayerPedId())
                             end, "fa-solid fa-fire-burner")
                         end
+                    else
+                        inDistance = false
+                    end
 
-                        -- DrawText
-                        if not shown and inDistance then
-                            exports['qb-core']:DrawText('[E] Prep Slop')
-                            shown = true
-                        elseif shown and not inDistance then
-                            exports['qb-core']:HideText()
-                            shown = false
-                        end
+                    -- DrawText
+                    if not Shown and inDistance then
+                        exports['qb-core']:DrawText('[E] Prep Slop')
+                        Shown = true
+                    elseif Shown and not inDistance then
+                        exports['qb-core']:HideText()
+                        Shown = false
                     end
                 end
             else
@@ -206,7 +211,7 @@ CreateThread(function()
                                 PropPlacement = {-0.0100, 0.0400, -0.0300, 0.0, 0.0, 0.0},
 
                             }, {}, {}, function() -- Done
-                                shown = false
+                                Shown = false
                                 inDistance = false
                                 exports['qb-core']:HideText()
 
@@ -222,15 +227,17 @@ CreateThread(function()
                             end, "fa-solid fa-broom")
                         end
 
-                        -- DrawText
-                        if not shown and inDistance then
-                            exports['qb-core']:DrawText('[E] Start Cleaning')
-                            shown = true
-                        elseif shown and not inDistance then
-                            exports['qb-core']:HideText()
-                            shown = false
-                        end
+                    else
+                        inDistance = false
+                    end
 
+                    -- DrawText
+                    if not Shown and inDistance then
+                        exports['qb-core']:DrawText('[E] Start Cleaning')
+                        Shown = true
+                    elseif Shown and not inDistance then
+                        exports['qb-core']:HideText()
+                        Shown = false
                     end
                 end
             else
