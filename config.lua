@@ -1,5 +1,21 @@
 Config = {}
 
+-------------------
+-- Debug Configs --
+-------------------
+Config.Debug = false -- Set to true for server/client prints
+Config.DebugPoly = true -- Set to true to debug PolyZones
+Config.Crafting = false -- Set to false to disable crafting or if you own qb-prisonjobs
+
+----------------------
+------- Lifers -------
+----------------------
+-- Add Citizen IDs here
+-- Their time will not reduce
+Config.Lifers = {
+    -- Enter Citizen ID
+}
+
 ----------------------
 -- Dispatch Configs --
 ----------------------
@@ -14,10 +30,10 @@ Config.CDDispatch = false -- Set to true for using cd-dispatch
 
 ]]--
 
------------------------------
--- Slushy Minigame Configs --
------------------------------
-
+------------------------------
+------ Minigame Configs ------
+------------------------------
+-- Set one of these minigames enabled to TRUE
 Config.SlushyMiniGame = {
     -- PS - UI MINIGAMES --
     PSThermite = {
@@ -27,7 +43,7 @@ Config.SlushyMiniGame = {
         incorrect = 5
     },
     PSCircle = {
-        enabled = false,
+        enabled = true,
         circles = 3,
         time = 15
     },
@@ -40,16 +56,13 @@ Config.SlushyMiniGame = {
         width = math.random(5, 15), -- How wide the static box is
     },
     QBLock = {
-        enabled = true,
+        enabled = false,
         circles = 3,
         time = 15
     },
 }
 
----------------------------
--- Soda Minigame Configs --
----------------------------
-
+-- Set one of these minigames enabled to TRUE
 Config.SodaMiniGame = {
     -- PS - UI MINIGAMES --
     PSThermite = {
@@ -78,38 +91,17 @@ Config.SodaMiniGame = {
     },
 }
 
--------------------
--- Workout Delay --
--------------------
-
-Config.Delay = 5
-
------------------
--- Map Configs --
------------------
-
+-------------------------
+--Extra Config Options --
+-------------------------
 -- Config.QBCore = false -- Set to true if using QBCore's prison_map
 Config.Gabz = true -- Set to true if using cfx-gabz-prison
-
---------------------------------
--- QB-PrisonJobs Script Usage --
---------------------------------
-
-Config.QB_PrisonJobs = true -- Set to true if using qb-prisonjobs
-
------------------------
--- Remove Job Config --
------------------------
-
 Config.RemoveJobs = false -- Set to true if you don't want to remove player's job.
+Config.Delay = 5 -- Workout Cooldown
 
--------------------
--- Debug Configs --
--------------------
-
-Config.Debug = false -- Set to true for server/client prints
-Config.DebugPoly = false -- Set to true to debug PolyZones
-Config.Crafting = true -- Set to false to disable crafting or if you own qb-prisonjobs
+-- If you are using qb-prisonjobs by xThrasherrr#6666 then set this to true
+-- https://thrasherrrdev.tebex.io/package/5226873
+Config.QB_PrisonJobs = true -- Set to true if using qb-prisonjobs
 
 ----------------------
 -- Location Configs --
@@ -306,8 +298,6 @@ Config.Locations = {
     ["work"] = {
         coords = vector4(1828.83, 2580.21, 46.01, 0.5) --coords = vector3(1828.83, 2580.21, 46.01),
     },
-
-    -- GABZ LOCATIONS
     spawns = {
         [1] = { -- Cell 1
             animation = "lean3",
