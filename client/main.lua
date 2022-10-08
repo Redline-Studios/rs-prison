@@ -8,16 +8,16 @@ ShopBlip = nil
 WorkBlip = nil
 PlayerJob = {}
 
+local PlayerData = QBCore.Functions.GetPlayerData()
 local sharedItems = QBCore.Shared.Items
-local canteenTarget = false
-local prisontimeTarget = false
-local slushyTarget = false
-local sodaTarget = false
-local coffeeTarget = false
-local prisoncraftingTarget = false
-
+local targetsCreated = false
 local inRange = false
+local TargetsTable = {}
 
+
+-------------------------------------------
+------ ONLY USED FOR QB-PRISONJOBS --------
+-------------------------------------------
 local function GetJailTime()
 	if Config.QB_PrisonJobs then
 		return jailTime
@@ -25,6 +25,28 @@ local function GetJailTime()
 end
 exports('GetJailTime', GetJailTime)
 
+
+-------------------------------------------
+-------- CHECK FOR LIFER CITIZENID --------
+-------------------------------------------
+local function LiferCheck()
+	for _, cid in pairs(Config.Lifers) do
+		if PlayerData.citizenid == cid then
+			cb = true
+		else
+			cb = false
+		end
+
+		if Config.Debug then
+			print(cid)
+		end
+	end
+	return cb
+end
+
+-------------------------------------------
+-------------- PRISON BLIPS ---------------
+-------------------------------------------
 local function CreateCellsBlip()
 	if CellsBlip ~= nil then
 		RemoveBlip(CellsBlip)
@@ -90,38 +112,22 @@ end
 --------------------------------
 
 local function CreateAllTargets()
-	if not canteenTarget and not prisontimeTarget and not slushyTarget and not coffeeTarget and not sodaTarget then
-    	TriggerEvent('qb-prison:PrisonTimeTarget')
-    	TriggerEvent('qb-prison:CanteenTarget')
-    	TriggerEvent('qb-prison:SlushyTarget')
-		TriggerEvent('qb-prison:SodaTarget')
-		TriggerEvent('qb-prison:CoffeeTarget')
-		if Config.Crafting then
-			TriggerEvent('qb-prison:PrisonCraftingTarget')
-		end
+	if not targetsCreated then
+		TriggerEvent('qb-prison:CreateTargets')
 	end
 
     if Config.Debug then
-        print('All Zones Created')
+        print('All Prison Zones Created')
     end
 end
 
 local function DestroyAllTargets()
-	if canteenTarget and prisontimeTarget and slushyTarget and sodaTarget and coffeeTarget then
-    	exports['qb-target']:RemoveZone("prisontime")
-    	exports['qb-target']:RemoveZone("prisoncanteen")
-    	exports['qb-target']:RemoveZone("prisonslushy")
-		exports['qb-target']:RemoveZone("prisoncoffee")
-		exports['qb-target']:RemoveZone("prisonsoda")
-		if Config.Crafting then
-			exports['qb-target']:RemoveZone("prisoncrafting")
+	if targetsCreated then
+		for k,v in pairs(TargetsTable) do
+			exports['qb-target']:RemoveZone(v)
 		end
 
-		canteenTarget = false
-		prisontimeTarget = false
-		slushyTarget = false
-		sodaTarget = false
-		coffeeTarget = false
+		targetsCreated = false
 	end
 
     if Config.Debug then
@@ -137,6 +143,10 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 	QBCore.Functions.GetPlayerData(function(PlayerData)
 		if PlayerData.metadata["injail"] > 0 then
 			TriggerEvent("prison:client:Enter", PlayerData.metadata["injail"])
+
+			if LiferCheck() then
+				TriggerServerEvent('prison:server:SetJailStatus', 999)
+			end
 		end
 	end)
 
@@ -156,6 +166,10 @@ AddEventHandler('onResourceStart', function(resourceName)
 		QBCore.Functions.GetPlayerData(function(PlayerData)
 			if PlayerData.metadata["injail"] > 0 then
 				TriggerEvent("prison:client:Enter", PlayerData.metadata["injail"])
+
+				if LiferCheck() then
+					TriggerServerEvent('prison:server:SetJailStatus', 999)
+				end
 			end
 		end)
 	end
@@ -184,6 +198,9 @@ end)
 AddEventHandler('onResourceStop', function(resourceName)
     if GetCurrentResourceName() == resourceName then
 		DestroyAllTargets()
+		for k,v in pairs(TargetsTable) do
+			print(k,v)
+		end
     end
 end)
 
@@ -282,7 +299,7 @@ RegisterNetEvent('prison:client:UnjailPerson', function()
 end)
 
 ---------------------------------------------------
--- 		   PRISON JOBS 			 --
+------------------ PRISON JOBS --------------------
 -- Fix Electrical, Cook, or Sweep to Reduce Time --
 ---------------------------------------------------
 
@@ -454,110 +471,34 @@ end)
 
 -- Check Time
 RegisterNetEvent('qb-prison:client:checkTime', function()
-	if LocalPlayer.state.isLoggedIn then
-		if inJail then
-			local pos = GetEntityCoords(PlayerPedId())
-			if #(pos - vector3(Config.Locations["freedom"].coords.x, Config.Locations["freedom"].coords.y, Config.Locations["freedom"].coords.z)) < 1.5 then
-				TriggerEvent("prison:client:Leave")
-			end
+	if inJail then
+		local pos = GetEntityCoords(PlayerPedId())
+		if #(pos - vector3(Config.Locations["freedom"].coords.x, Config.Locations["freedom"].coords.y, Config.Locations["freedom"].coords.z)) < 1.5 then
+			TriggerEvent("prison:client:Leave")
 		end
 	end
 end)
 
 -- Use Canteen
 RegisterNetEvent('qb-prison:client:useCanteen', function()
-	if LocalPlayer.state.isLoggedIn then
-		if inJail then
-			local ShopItems = {}
-			ShopItems.label = "Prison Canteen"
-			ShopItems.items = Config.CanteenItems
-			ShopItems.slots = #Config.CanteenItems
-			TriggerServerEvent("inventory:server:OpenInventory", "shop", "Canteenshop_"..math.random(1, 99), ShopItems)
-		else
-			QBCore.Functions.Notify("You are not in Jail..", "error")
-		end
+	if inJail then
+		local ShopItems = {}
+		ShopItems.label = "Prison Canteen"
+		ShopItems.items = Config.CanteenItems
+		ShopItems.slots = #Config.CanteenItems
+		TriggerServerEvent("inventory:server:OpenInventory", "shop", "Canteenshop_"..math.random(1, 99), ShopItems)
 	else
-		Wait(5000)
+		QBCore.Functions.Notify("You are not in Jail..", "error")
 	end
 end)
 
 -- Slushy Machine
 RegisterNetEvent('qb-prison:client:slushy', function()
-	if LocalPlayer.state.isLoggedIn then
-		if inJail then
-			Wait(1000)
-			local ped = PlayerPedId()
-			if Config.SlushyMiniGame.PSThermite.enabled then
-				exports['ps-ui']:Thermite(function(success)
-					if success then
-						TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
-						TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
-						QBCore.Functions.Progressbar("prison_slushy", "Making a Good Slushy...", 10000, false, true, {
-							disableMovement = false,
-							disableCarMovement = true,
-							disableMouse = false,
-							disableCombat = true,
-						}, {}, {}, {}, function() -- Done
-							SlushyTime(success)
-							ClearPedTasks(PlayerPedId())
-						end, function() -- Cancel
-							QBCore.Functions.Notify("Canceled...", "error")
-							ClearPedTasks(PlayerPedId())
-						end, "slushy")
-					else
-						QBCore.Functions.Notify("You Failed making a Slushy..", "error")
-						ClearPedTasks(PlayerPedId())
-					end
-				end, Config.SlushyMiniGame.PSThermite.time, Config.SlushyMiniGame.PSThermite.grid, Config.SlushyMiniGame.PSThermite.incorrect)
-			elseif Config.SlushyMiniGame.PSCircle.enabled then
-				exports['ps-ui']:Circle(function(success)
-					if success then
-						TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
-						TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
-						QBCore.Functions.Progressbar("prison_slushy", "Making a Good Slushy...", 10000, false, true, {
-							disableMovement = false,
-							disableCarMovement = true,
-							disableMouse = false,
-							disableCombat = true,
-						}, {}, {}, {}, function() -- Done
-							SlushyTime(success)
-							ClearPedTasks(PlayerPedId())
-						end, function() -- Cancel
-							QBCore.Functions.Notify("Canceled...", "error")
-							ClearPedTasks(PlayerPedId())
-						end, "slushy")
-					else
-						QBCore.Functions.Notify("You Failed making a Slushy..", "error")
-						ClearPedTasks(PlayerPedId())
-					end
-				end, Config.SlushyMiniGame.PSCircle.circles, Config.SlushyMiniGame.PSCircle.time) -- NumberOfCircles, MS
-			elseif Config.SlushyMiniGame.QBSkillbar.enabled then
-				local Skillbar = exports['qb-skillbar']:GetSkillbarObject()
-				Skillbar.Start({
-					duration = Config.SlushyMiniGame.QBSkillbar.duration, -- how long the skillbar runs for
-					pos = Config.SlushyMiniGame.QBSkillbar.pos, -- how far to the right the static box is
-					width = Config.SlushyMiniGame.QBSkillbar.width, -- how wide the static box is
-				}, function()
-					TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
-					TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
-					QBCore.Functions.Progressbar("prison_slushy", "Making a Good Slushy...", 10000, false, true, {
-						disableMovement = false,
-						disableCarMovement = true,
-						disableMouse = false,
-						disableCombat = true,
-					}, {}, {}, {}, function() -- Done
-						SlushyTime(Skillbar)
-						ClearPedTasks(PlayerPedId())
-					end, function() -- Cancel
-						QBCore.Functions.Notify("Canceled...", "error")
-						ClearPedTasks(PlayerPedId())
-					end, "slushy")
-				end, function()
-					QBCore.Functions.Notify("You Failed making a Slushy..", "error")
-					ClearPedTasks(PlayerPedId())
-				end)
-			elseif Config.SlushyMiniGame.QBLock.enabled then
-				local success = exports['qb-lock']:StartLockPickCircle(Config.SlushyMiniGame.QBLock.circles, Config.SlushyMiniGame.QBLock.time, success)
+	if inJail then
+		Wait(1000)
+		local ped = PlayerPedId()
+		if Config.SlushyMiniGame.PSThermite.enabled then
+			exports['ps-ui']:Thermite(function(success)
 				if success then
 					TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
 					TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
@@ -577,12 +518,78 @@ RegisterNetEvent('qb-prison:client:slushy', function()
 					QBCore.Functions.Notify("You Failed making a Slushy..", "error")
 					ClearPedTasks(PlayerPedId())
 				end
+			end, Config.SlushyMiniGame.PSThermite.time, Config.SlushyMiniGame.PSThermite.grid, Config.SlushyMiniGame.PSThermite.incorrect)
+		elseif Config.SlushyMiniGame.PSCircle.enabled then
+			exports['ps-ui']:Circle(function(success)
+				if success then
+					TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
+					TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
+					QBCore.Functions.Progressbar("prison_slushy", "Making a Good Slushy...", 10000, false, true, {
+						disableMovement = false,
+						disableCarMovement = true,
+						disableMouse = false,
+						disableCombat = true,
+					}, {}, {}, {}, function() -- Done
+						SlushyTime(success)
+						ClearPedTasks(PlayerPedId())
+					end, function() -- Cancel
+						QBCore.Functions.Notify("Canceled...", "error")
+						ClearPedTasks(PlayerPedId())
+					end, "slushy")
+				else
+					QBCore.Functions.Notify("You Failed making a Slushy..", "error")
+					ClearPedTasks(PlayerPedId())
+				end
+			end, Config.SlushyMiniGame.PSCircle.circles, Config.SlushyMiniGame.PSCircle.time) -- NumberOfCircles, MS
+		elseif Config.SlushyMiniGame.QBSkillbar.enabled then
+			local Skillbar = exports['qb-skillbar']:GetSkillbarObject()
+			Skillbar.Start({
+				duration = Config.SlushyMiniGame.QBSkillbar.duration, -- how long the skillbar runs for
+				pos = Config.SlushyMiniGame.QBSkillbar.pos, -- how far to the right the static box is
+				width = Config.SlushyMiniGame.QBSkillbar.width, -- how wide the static box is
+			}, function()
+				TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
+				TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
+				QBCore.Functions.Progressbar("prison_slushy", "Making a Good Slushy...", 10000, false, true, {
+					disableMovement = false,
+					disableCarMovement = true,
+					disableMouse = false,
+					disableCombat = true,
+				}, {}, {}, {}, function() -- Done
+					SlushyTime(Skillbar)
+					ClearPedTasks(PlayerPedId())
+				end, function() -- Cancel
+					QBCore.Functions.Notify("Canceled...", "error")
+					ClearPedTasks(PlayerPedId())
+				end, "slushy")
+			end, function()
+				QBCore.Functions.Notify("You Failed making a Slushy..", "error")
+				ClearPedTasks(PlayerPedId())
+			end)
+		elseif Config.SlushyMiniGame.QBLock.enabled then
+			local success = exports['qb-lock']:StartLockPickCircle(Config.SlushyMiniGame.QBLock.circles, Config.SlushyMiniGame.QBLock.time, success)
+			if success then
+				TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
+				TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
+				QBCore.Functions.Progressbar("prison_slushy", "Making a Good Slushy...", 10000, false, true, {
+					disableMovement = false,
+					disableCarMovement = true,
+					disableMouse = false,
+					disableCombat = true,
+				}, {}, {}, {}, function() -- Done
+					SlushyTime(success)
+					ClearPedTasks(PlayerPedId())
+				end, function() -- Cancel
+					QBCore.Functions.Notify("Canceled...", "error")
+					ClearPedTasks(PlayerPedId())
+				end, "slushy")
+			else
+				QBCore.Functions.Notify("You Failed making a Slushy..", "error")
+				ClearPedTasks(PlayerPedId())
 			end
-		else
-			QBCore.Functions.Notify("You are not in Jail..", "error")
 		end
 	else
-		Wait(5000)
+		QBCore.Functions.Notify("You are not in Jail..", "error")
 	end
 end)
 
@@ -597,86 +604,15 @@ function SlushyTime(success)
 	else
 		QBCore.Functions.Notify("Slushy Machine is Broken", "error")
 	end
-
 end
 
 -- Soda Machine
 RegisterNetEvent('qb-prison:client:soda', function()
-	if LocalPlayer.state.isLoggedIn then
-		if inJail then
-			Wait(1000)
-			local ped = PlayerPedId()
-			if Config.SodaMiniGame.PSThermite.enabled then
-				exports['ps-ui']:Thermite(function(success)
-					if success then
-						TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
-						TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
-						QBCore.Functions.Progressbar("prison_soda", "Making a Cup Of Soda...", 10000, false, true, {
-							disableMovement = false,
-							disableCarMovement = true,
-							disableMouse = false,
-							disableCombat = true,
-						}, {}, {}, {}, function() -- Done
-							SodaTime(success)
-							ClearPedTasks(PlayerPedId())
-						end, function() -- Cancel
-							QBCore.Functions.Notify("Canceled...", "error")
-							ClearPedTasks(PlayerPedId())
-						end, "bscoke")
-					else
-						QBCore.Functions.Notify("You failed making a Soda..", "error")
-						ClearPedTasks(PlayerPedId())
-					end
-				end, Config.SodaMiniGame.PSThermite.time, Config.SodaMiniGame.PSThermite.grid, Config.SodaMiniGame.PSThermite.incorrect)
-			elseif Config.SodaMiniGame.PSCircle.enabled then
-				exports['ps-ui']:Circle(function(success)
-					if success then
-						TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
-						TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
-						QBCore.Functions.Progressbar("prison_soda", "Making a Cup Of Soda...", 10000, false, true, {
-							disableMovement = false,
-							disableCarMovement = true,
-							disableMouse = false,
-							disableCombat = true,
-						}, {}, {}, {}, function() -- Done
-							SodaTime(success)
-							ClearPedTasks(PlayerPedId())
-						end, function() -- Cancel
-							QBCore.Functions.Notify("Canceled...", "error")
-							ClearPedTasks(PlayerPedId())
-						end, "bscoke")
-					else
-						QBCore.Functions.Notify("You failed making a Soda..", "error")
-						ClearPedTasks(PlayerPedId())
-					end
-				end, Config.SodaMiniGame.PSCircle.circles, Config.SodaMiniGame.PSCircle.time) -- NumberOfCircles, MS
-			elseif Config.SodaMiniGame.QBSkillbar.enabled then
-				local Skillbar = exports['qb-skillbar']:GetSkillbarObject()
-				Skillbar.Start({
-					duration = Config.SodaMiniGame.QBSkillbar.duration, -- how long the skillbar runs for
-					pos = Config.SodaMiniGame.QBSkillbar.pos, -- how far to the right the static box is
-					width = Config.SodaMiniGame.QBSkillbar.width, -- how wide the static box is
-				}, function()
-					TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
-					TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
-					QBCore.Functions.Progressbar("prison_soda", "Making a Cup Of Soda...", 10000, false, true, {
-						disableMovement = false,
-						disableCarMovement = true,
-						disableMouse = false,
-						disableCombat = true,
-					}, {}, {}, {}, function() -- Done
-						SodaTime(Skillbar)
-						ClearPedTasks(PlayerPedId())
-					end, function() -- Cancel
-						QBCore.Functions.Notify("Canceled...", "error")
-						ClearPedTasks(PlayerPedId())
-					end, "bscoke")
-				end, function()
-					QBCore.Functions.Notify("You failed making a Soda..", "error")
-					ClearPedTasks(PlayerPedId())
-				end)
-			elseif Config.SodaMiniGame.QBLock.enabled then
-				local success = exports['qb-lock']:StartLockPickCircle(Config.SodaMiniGame.QBLock.circles, Config.SodaMiniGame.QBLock.time, success)
+	if inJail then
+		Wait(1000)
+		local ped = PlayerPedId()
+		if Config.SodaMiniGame.PSThermite.enabled then
+			exports['ps-ui']:Thermite(function(success)
 				if success then
 					TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
 					TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
@@ -696,12 +632,78 @@ RegisterNetEvent('qb-prison:client:soda', function()
 					QBCore.Functions.Notify("You failed making a Soda..", "error")
 					ClearPedTasks(PlayerPedId())
 				end
+			end, Config.SodaMiniGame.PSThermite.time, Config.SodaMiniGame.PSThermite.grid, Config.SodaMiniGame.PSThermite.incorrect)
+		elseif Config.SodaMiniGame.PSCircle.enabled then
+			exports['ps-ui']:Circle(function(success)
+				if success then
+					TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
+					TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
+					QBCore.Functions.Progressbar("prison_soda", "Making a Cup Of Soda...", 10000, false, true, {
+						disableMovement = false,
+						disableCarMovement = true,
+						disableMouse = false,
+						disableCombat = true,
+					}, {}, {}, {}, function() -- Done
+						SodaTime(success)
+						ClearPedTasks(PlayerPedId())
+					end, function() -- Cancel
+						QBCore.Functions.Notify("Canceled...", "error")
+						ClearPedTasks(PlayerPedId())
+					end, "bscoke")
+				else
+					QBCore.Functions.Notify("You failed making a Soda..", "error")
+					ClearPedTasks(PlayerPedId())
+				end
+			end, Config.SodaMiniGame.PSCircle.circles, Config.SodaMiniGame.PSCircle.time) -- NumberOfCircles, MS
+		elseif Config.SodaMiniGame.QBSkillbar.enabled then
+			local Skillbar = exports['qb-skillbar']:GetSkillbarObject()
+			Skillbar.Start({
+				duration = Config.SodaMiniGame.QBSkillbar.duration, -- how long the skillbar runs for
+				pos = Config.SodaMiniGame.QBSkillbar.pos, -- how far to the right the static box is
+				width = Config.SodaMiniGame.QBSkillbar.width, -- how wide the static box is
+			}, function()
+				TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
+				TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
+				QBCore.Functions.Progressbar("prison_soda", "Making a Cup Of Soda...", 10000, false, true, {
+					disableMovement = false,
+					disableCarMovement = true,
+					disableMouse = false,
+					disableCombat = true,
+				}, {}, {}, {}, function() -- Done
+					SodaTime(Skillbar)
+					ClearPedTasks(PlayerPedId())
+				end, function() -- Cancel
+					QBCore.Functions.Notify("Canceled...", "error")
+					ClearPedTasks(PlayerPedId())
+				end, "bscoke")
+			end, function()
+				QBCore.Functions.Notify("You failed making a Soda..", "error")
+				ClearPedTasks(PlayerPedId())
+			end)
+		elseif Config.SodaMiniGame.QBLock.enabled then
+			local success = exports['qb-lock']:StartLockPickCircle(Config.SodaMiniGame.QBLock.circles, Config.SodaMiniGame.QBLock.time, success)
+			if success then
+				TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
+				TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
+				QBCore.Functions.Progressbar("prison_soda", "Making a Cup Of Soda...", 10000, false, true, {
+					disableMovement = false,
+					disableCarMovement = true,
+					disableMouse = false,
+					disableCombat = true,
+				}, {}, {}, {}, function() -- Done
+					SodaTime(success)
+					ClearPedTasks(PlayerPedId())
+				end, function() -- Cancel
+					QBCore.Functions.Notify("Canceled...", "error")
+					ClearPedTasks(PlayerPedId())
+				end, "bscoke")
+			else
+				QBCore.Functions.Notify("You failed making a Soda..", "error")
+				ClearPedTasks(PlayerPedId())
 			end
-		else
-			QBCore.Functions.Notify("You are not in Jail..", "error")
 		end
 	else
-		Wait(5000)
+		QBCore.Functions.Notify("You are not in Jail..", "error")
 	end
 end)
 
@@ -719,128 +721,16 @@ function SodaTime(success)
 end
 
 RegisterNetEvent('qb-prison:client:coffee', function()
-	if LocalPlayer.state.isLoggedIn then
-		if inJail then
-			local CoffeeItems = {}
-			CoffeeItems.label = "Prison Coffee"
-			CoffeeItems.items = Config.CoffeeItems
-			CoffeeItems.slots = #Config.CoffeeItems
-			TriggerServerEvent("inventory:server:OpenInventory", "shop", "Coffeeshop_"..math.random(1, 99), CoffeeItems)
-		else
-			QBCore.Functions.Notify("You are not in Jail..", "error")
-		end
+	if inJail then
+		local CoffeeItems = {}
+		CoffeeItems.label = "Prison Coffee"
+		CoffeeItems.items = Config.CoffeeItems
+		CoffeeItems.slots = #Config.CoffeeItems
+		TriggerServerEvent("inventory:server:OpenInventory", "shop", "Coffeeshop_"..math.random(1, 99), CoffeeItems)
 	else
-		Wait(5000)
+		QBCore.Functions.Notify("You are not in Jail..", "error")
 	end
 end)
-
----------------------------------------------
--- CUP RELATED FUNCTIONS SLUSHY SODA (WIP) --
----------------------------------------------
-
--- Cup Stack
-
--- Slushy Machine
---[[RegisterNetEvent('qb-prison:client:slushy', function(HasItem)
-	if LocalPlayer.state.isLoggedIn then
-		if inJail then
-			Citizen.Wait(1000)
-			if HasItem then
-				local ped = PlayerPedId()
-				local seconds = math.random(7,10)
-				local circles = math.random(5,10)
-				local success = exports['qb-lock']:StartLockPickCircle(circles, seconds, success)
-				if success then
-					TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
-					TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
-					QBCore.Functions.Progressbar("hospital_waiting", "Making a Good Slushy...", 10000, false, true, {
-						disableMovement = false,
-						disableCarMovement = true,
-						disableMouse = false,
-						disableCombat = true,
-					}, {}, {}, {}, function() -- Done
-						SlushyTime(success)
-						ClearPedTasks(PlayerPedId())
-					end, function() -- Cancel
-						QBCore.Functions.Notify("Failed...", "error")
-						ClearPedTasks(PlayerPedId())
-					end, "slushy")
-				else
-					QBCore.Functions.Notify("You Failed making a Slushy..", "error")
-					ClearPedTasks(PlayerPedId())
-				end
-			else
-				QBCore.Functions.Notify("You are missing a cup..", "error")
-			end
-		else
-			QBCore.Functions.Notify("You are not in Jail..", "error")
-		end
-	else
-		Wait(5000)
-	end
-end)
-
--- Slushy Success / Fail
-function SlushyTime(success)
-	if success then
-		local SlushyItems = {}
-			SlushyItems.label = "Prison Slushy"
-			SlushyItems.items = Config.SlushyItems
-			SlushyItems.slots = #Config.SlushyItems
-		TriggerServerEvent("inventory:server:OpenInventory", "shop", "Slushyshop_"..math.random(1, 99), SlushyItems)
-	else
-		QBCore.Functions.Notify("Slushy Machine is Broken", "error")
-	end
-end
-
--- Soda Machine
-RegisterNetEvent('qb-prison:client:soda', function()
-	if LocalPlayer.state.isLoggedIn then
-		if inJail then
-			Citizen.Wait(1000)
-			local ped = PlayerPedId()
-			local seconds = math.random(7,10)
-			local circles = math.random(5,10)
-			local success = exports['qb-lock']:StartLockPickCircle(circles, seconds, success)
-			if success then
-				TriggerServerEvent("InteractSound_SV:PlayOnSource", "pour-drink", 0.1)
-				TaskStartScenarioInPlace(ped, "WORLD_HUMAN_HANG_OUT_STREET", 0, true)
-				QBCore.Functions.Progressbar("hospital_waiting", "Making a Cup Of Soda...", 10000, false, true, {
-					disableMovement = false,
-					disableCarMovement = true,
-					disableMouse = false,
-					disableCombat = true,
-				}, {}, {}, {}, function() -- Done
-					SodaTime(success)
-					ClearPedTasks(PlayerPedId())
-				end, function() -- Cancel
-					QBCore.Functions.Notify("Failed...", "error")
-					ClearPedTasks(PlayerPedId())
-				end, "bsoke")
-			else
-				QBCore.Functions.Notify("You failed making a Soda..", "error")
-				ClearPedTasks(PlayerPedId())
-			end
-		else
-			QBCore.Functions.Notify("You are not in Jail..", "error")
-		end
-	else
-		Wait(5000)
-	end
-end)
-
--- Soda Success / Fail
-function SodaTime(success)
-	if success then
-		local SodaItems = {}
-			SodaItems.label = "Prison Soda"
-			SodaItems.items = Config.SodaItems
-			SodaItems.slots = #Config.SodaItems
-		TriggerServerEvent("inventory:server:OpenInventory", "shop", "Sodashop_"..math.random(1, 99), SodaItems)
-	else
-		QBCore.Functions.Notify("Soda Machine is Broken", "error")
-	end
-end]]--
 
 -------------------------------
 -- CRAFTING MENU AND EVENTS --
@@ -953,13 +843,12 @@ RegisterNetEvent('qb-prison:client:GetCraftingItems', function(job)
 	end
 end)
 
------------------------
--- TARGET FUNCTIONS --
------------------------
-
--- PRISON TIME TARGET
-RegisterNetEvent('qb-prison:PrisonTimeTarget', function()
-    exports['qb-target']:AddBoxZone("prisontime", vector3(1827.3, 2587.72, 46.01), 0.4, 0.55, {
+------------------
+-- TARGET EVENT --
+------------------
+-- Create Targets
+RegisterNetEvent('qb-prison:CreateTargets', function()
+	CheckTime = exports['qb-target']:AddBoxZone("prisontime", vector3(1827.3, 2587.72, 46.01), 0.4, 0.55, {
         name = "prisontime",
         heading = 0,
         debugPoly = Config.DebugPoly,
@@ -982,17 +871,9 @@ RegisterNetEvent('qb-prison:PrisonTimeTarget', function()
         },
         distance = 2,
     })
+	table.insert(TargetsTable, "prisontime")
 
-    prisontimeTarget = true
-
-    if Config.Debug then
-        print('Prison Time Target Created')
-    end
-end)
-
--- CANTEEN TARGET
-RegisterNetEvent('qb-prison:CanteenTarget', function()
-    exports['qb-target']:AddBoxZone("prisoncanteen", vector3(1780.95, 2560.05, 45.67), 3.8, 0.5, {
+    Canteen = exports['qb-target']:AddBoxZone("prisoncanteen", vector3(1780.95, 2560.05, 45.67), 3.8, 0.5, {
         name = "prisoncanteen",
         heading = 90,
         debugPoly = Config.DebugPoly,
@@ -1009,18 +890,9 @@ RegisterNetEvent('qb-prison:CanteenTarget', function()
         },
         distance = 2,
     })
+	table.insert(TargetsTable, "prisoncanteen")
 
-    canteenTarget = true
-
-    if Config.Debug then
-        print('Canteen Target Created')
-    end
-end)
-
-
--- SLUSHY TARGET
-RegisterNetEvent('qb-prison:SlushyTarget', function()
-    exports['qb-target']:AddBoxZone("prisonslushy", vector3(1777.64, 2559.97, 45.67), 0.5, 0.7, {
+	Slushy = exports['qb-target']:AddBoxZone("prisonslushy", vector3(1777.64, 2559.97, 45.67), 0.5, 0.7, {
         name = "prisonslushy",
         heading = 0,
         debugPoly = Config.DebugPoly,
@@ -1037,17 +909,9 @@ RegisterNetEvent('qb-prison:SlushyTarget', function()
         },
         distance = 2,
     })
+	table.insert(TargetsTable, "prisonslushy")
 
-    slushyTarget = true
-
-    if Config.Debug then
-        print('Slushy Target Created')
-    end
-end)
-
--- COFFEE TARGET
-RegisterNetEvent('qb-prison:CoffeeTarget', function()
-    exports['qb-target']:AddBoxZone("prisoncoffee", vector3(1778.83, 2560.04, 45.67), 0.5, 0.3, {
+	Coffee = exports['qb-target']:AddBoxZone("prisoncoffee", vector3(1778.83, 2560.04, 45.67), 0.5, 0.3, {
         name = "prisoncoffee",
         heading = 0,
         debugPoly = Config.DebugPoly,
@@ -1064,17 +928,9 @@ RegisterNetEvent('qb-prison:CoffeeTarget', function()
         },
         distance = 2,
     })
+	table.insert(TargetsTable, "prisoncoffee")
 
-    coffeeTarget = true
-
-    if Config.Debug then
-        print('Coffee Target Created')
-    end
-end)
-
--- SODA TARGET
-RegisterNetEvent('qb-prison:SodaTarget', function()
-    exports['qb-target']:AddBoxZone("prisonsoda", vector3(1778.26, 2560.02, 45.67), 0.6, 0.55, {
+	Soda = exports['qb-target']:AddBoxZone("prisonsoda", vector3(1778.26, 2560.02, 45.67), 0.6, 0.55, {
         name = "prisonsoda",
         heading = 0,
         debugPoly = Config.DebugPoly,
@@ -1091,39 +947,32 @@ RegisterNetEvent('qb-prison:SodaTarget', function()
         },
         distance = 2,
     })
+	table.insert(TargetsTable, "prisonsoda")
 
-    sodaTarget = true
+	if Config.Crafting then
+		Crafting = exports['qb-target']:AddBoxZone("prisoncrafting", vector3(Config.CraftingLocation.x, Config.CraftingLocation.y, Config.CraftingLocation.z), 1.4, 0.5, {
+			name = "prisoncrafting",
+			heading = Config.CraftingLocation.w,
+			debugPoly = Config.DebugPoly,
+			minZ = Config.CraftingLocation.z - 1,
+			maxZ = Config.CraftingLocation.z + 1,
+			}, {
+				options = {
+				{
+					type = "client",
+					event = "qb-prison:CraftingMenu",
+					icon = "fas fa-toolbox",
+					label = "Prison Crafting",
+				},
+			},
+			distance = 2,
+		})
 
-    if Config.Debug then
-        print('Soda Target Created')
-    end
-end)
+		table.insert(TargetsTable, "prisoncrafting")
+	end
 
--- PRISON CRAFTING TARGET - POLYZONE IS ON A DOOR
-RegisterNetEvent('qb-prison:PrisonCraftingTarget', function()
-    exports['qb-target']:AddBoxZone("prisoncrafting", vector3(Config.CraftingLocation.x, Config.CraftingLocation.y, Config.CraftingLocation.z), 1.4, 0.5, {
-        name = "prisoncrafting",
-        heading = Config.CraftingLocation.w,
-        debugPoly = Config.DebugPoly,
-		minZ = Config.CraftingLocation.z - 1,
-		maxZ = Config.CraftingLocation.z + 1,
-        }, {
-            options = {
-            {
-                type = "client",
-                event = "qb-prison:CraftingMenu",
-                icon = "fas fa-toolbox",
-                label = "Prison Crafting",
-            },
-        },
-        distance = 2,
-    })
+	targetsCreated = true
 
-    prisoncraftingTarget = true
-
-    if Config.Debug then
-        print('Prison Crafting Target Created')
-    end
 end)
 
 ----------------------------------
@@ -1134,22 +983,36 @@ CreateThread(function()
     TriggerEvent('prison:client:JailAlarm', false)
 	while true do
 		local sleep = 1000
-		if jailTime ~= nil and jailTime > 0 and inJail then
-			Wait(1000 * 60)
-			sleep = 0
-			if jailTime > 0 and inJail then
-				jailTime -= 1
-				if jailTime <= 0 then
-					jailTime = 0
-					QBCore.Functions.Notify(Lang:t("success.timesup"), "success", 10000)
+		if not LiferCheck() then
+			if jailTime ~= nil and jailTime > 0 and inJail then
+				Wait(1000 * 60)
+				sleep = 0
+				if jailTime > 0 and inJail then
+					jailTime -= 1
+					if jailTime <= 0 then
+						jailTime = 0
+						QBCore.Functions.Notify(Lang:t("success.timesup"), "success", 10000)
+					end
+					TriggerServerEvent("prison:server:SetJailStatus", jailTime)
+
+					GetJailTime()
+
 				end
-				TriggerServerEvent("prison:server:SetJailStatus", jailTime)
-
-				GetJailTime()
-
+			else
+				Wait(sleep)
 			end
 		else
+			jailTime = 999
 			Wait(sleep)
 		end
+	end
+end)
+
+RegisterCommand('jailtime', function()
+	if not LiferCheck() then
+		Time = GetJailTime()
+		QBCore.Functions.Notify("You are in jail for "..Time.." months.","error")
+	else
+		QBCore.Functions.Notify("You are in jail for life! Criminal Scum!","error")
 	end
 end)
