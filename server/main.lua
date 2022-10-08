@@ -110,7 +110,7 @@ end)
 --[[QBCore.Functions.CreateCallback('prison:server:GetItemsNeeded', function(source, cb, item)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    if Player ~= nil then 
+    if Player ~= nil then
         local Drill = Player.Functions.GetItemByName(item)
         if Drill ~= nil then
             cb(true)
