@@ -210,6 +210,31 @@ Config.PrisonJobs = {
 
 Config.PrisonWage = 10
 
+--------------------
+-- Outifts Config --
+--------------------
+
+Config.Outfits = {
+    male = {
+        mask = { item = 0, texture = 0 },
+        arms = { item = 0, texture = 0 },
+        shirt = { item = 0, texture = 0 },
+        jacket = { item = 0, texture = 0 },
+        pants = { item = 0, texture = 0 },
+        shoes = { item = 0, texture = 0 },
+        accessories = { item = 0, texture = 0 },
+    },
+    female = {
+        mask = { item = 0, texture = 0 },
+        arms = { item = 0, texture = 0 },
+        shirt = { item = 0, texture = 0 },
+        jacket = { item = 0, texture = 0 },
+        pants = { item = 0, texture = 0 },
+        shoes = { item = 0, texture = 0 },
+        accessories = { item = 0, texture = 0 },
+    },
+}
+
 ----------------------------
 -- Basic Location Configs --
 ----------------------------

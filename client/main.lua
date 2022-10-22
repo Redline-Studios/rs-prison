@@ -45,6 +45,30 @@ local function LiferCheck()
 end
 
 -------------------------------------------
+------------ PRISONER CLOTHES -------------
+-------------------------------------------
+
+local function PrisonClothes()
+	if IsPedModel(PlayerPedId(), 'mp_m_freemode_01') then
+		SetPedComponentVariation(PlayerPedId(), 1 , Config.Outfits.male.mask.item,Config.Outfits.male.mask.texture) -- Mask
+		SetPedComponentVariation(PlayerPedId(), 4, Config.Outfits.male.pants.item,Config.Outfits.male.pants.texture) -- Pants
+		SetPedComponentVariation(PlayerPedId(), 8 ,Config.Outfits.male.shirt.item,Config.Outfits.male.shirt.texture) -- Shirt
+		SetPedComponentVariation(PlayerPedId(), 11 ,Config.Outfits.male.jacket.item,Config.Outfits.male.jacket.texture) -- Jacket
+		SetPedComponentVariation(PlayerPedId(), 3 ,Config.Outfits.male.arms.item,Config.Outfits.male.arms.texture) -- Arms
+		SetPedComponentVariation(PlayerPedId(), 6 ,Config.Outfits.male.shoes.item,Config.Outfits.male.shoes.texture) -- Shoes
+		SetPedComponentVariation(PlayerPedId(), 7 ,Config.Outfits.male.accessories.item,Config.Outfits.male.accessories.texture) -- Accessory
+	elseif IsPedModel(PlayerPedId(), 'mp_f_freemode_01') then
+		SetPedComponentVariation(PlayerPedId(), 1 ,Config.Outfits.female.mask.item,Config.Outfits.female.mask.texture) -- Mask
+		SetPedComponentVariation(PlayerPedId(), 4 ,Config.Outfits.female.pants.item,Config.Outfits.female.pants.texture) -- Pants
+		SetPedComponentVariation(PlayerPedId(), 8 ,Config.Outfits.female.shirt.item,Config.Outfits.female.shirt.texture) -- Shirt
+		SetPedComponentVariation(PlayerPedId(), 11 ,Config.Outfits.female.jacket.item,Config.Outfits.female.jacket.texture) -- Jacket
+		SetPedComponentVariation(PlayerPedId(), 3 ,Config.Outfits.female.arms.item,Config.Outfits.female.arms.texture) -- Arms
+		SetPedComponentVariation(PlayerPedId(), 6 ,Config.Outfits.female.shoes.item,Config.Outfits.female.shoes.texture) -- Shoes
+		SetPedComponentVariation(PlayerPedId(), 7 ,Config.Outfits.female.accessories.item,Config.Outfits.female.accessories.texture) -- Accessory
+	end
+end
+
+-------------------------------------------
 -------------- PRISON BLIPS ---------------
 -------------------------------------------
 local function CreateCellsBlip()
@@ -215,6 +239,7 @@ RegisterNetEvent('prison:client:Enter', function(time)
 	local RandomStartPosition = Config.Locations.spawns[math.random(1, #Config.Locations.spawns)]
 	SetEntityCoords(PlayerPedId(), RandomStartPosition.coords.x, RandomStartPosition.coords.y, RandomStartPosition.coords.z - 0.9, 0, 0, 0, false)
 	SetEntityHeading(PlayerPedId(), RandomStartPosition.coords.w)
+	PrisonClothes()
 	Wait(500)
 	TriggerEvent('animations:client:EmoteCommandStart', {RandomStartPosition.animation})
 
