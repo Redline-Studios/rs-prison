@@ -1,44 +1,61 @@
-# Support the team on Ko-fi
+# Support us on Ko-fi
 
-## - Thrasherrr
+## - xThrasherrr
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/thrasherrr)
 
 ## - xViperAG
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/xviperag)
 
-## (v1.3) qb-prison:
-- Updated Prison Script for QB-Policejob Modified by IN1GHTM4R3
-- Forked & Modified to v1.3: Thrasherrr#9224 and xViperAG#3029
+## DESCRIPTION:
+- Updated Prison Script Orignially Modified by IN1GHTM4R3
+- Forked & Modified to v1.3: xThrasherrr#6666 and xViperAG#3029
 
 -----------------------------------------------------------------------------------------------------------------
 
-# Just Added v1.3:
-- Added Lockers (Gabz Prison)
-- Added New Spawn Locations (Gabz Prison)
-- Added Soda Machine and Coffee Machine
-- Redefined Config.Lua for more customization
-
-## Work In Progress v1.3
-- Additional Support for More UI
-- Additional Support for More Dispatches
-- Support for qb-prisonjobs by xThrasherrr
-- Additional Support for More Prisons
+## FEATURES:
+- Reduce your time doing jobs!
+    - Janitor - Go sweep the courtyard!
+    - Cook - Prepare some slop!
+    - Eletrician - Fix electrical boxes!
+    - Randomly find items used for crafting!
+- Change into a prisoner outfit!
+    - Set male/female outifts from the config
+- Prison Crafting
+    - Set a location in the config
+    - Set the items and required materials
+- Prison Food & Drinks w/ Minigames!
+    - Canteen
+    - Soda Machine (Minigame)
+    - Coffee Machine (Minigame)
+    - Slushy Machine (Minigame)
+    - Configure what minigame to use for each drink machine!
+        - Uses PS-UI, QB-Lock, and QB-Skillbar
+        - All configurable from the config
+- Lockers for prisoners!
+    - Adds lockers to every cell
+    - Lockers open a citizenid stash
+    - Police can seize the stashes by entering a citizenid
+- Be a lifer in prison!
+    - Stay in prison forever! Time never reduces
 
 -----------------------------------------------------------------------------------------------------------------
 
-# Just Added v1.2:
-- Added Crafting
-- Crafting items are set in config. Change items and amount required to craft
-- Crafting currently uses NoobySloths Custom-Weapons for Prison Shiv: https://github.com/NoobySloth/Custom-Weapons
-
------------------------------------------------------------------------------------------------------------------
-
-# Just Added v1.1:
-- Added Create / Delete Functions for Target Zones: Check Time / New Job, Canteen, and Slushy Machine
-- Slushy system functions & targeting by Primal#4155 (Add 'slushy' to core items, image provided)
-- Added Jobs: Cook & Janitor
-- Added Config for ps-dispatch use. https://github.com/Project-Sloth/ps-dispatch
-- Added Config options for print debug and PolyZone debugs
+## DEVELOPMENT FEATURES:
+- Debug Configs
+    - Prints for debugging
+    - Polyzoine Debug
+- Create/Destroy all qb-target zones
+    - Resource Start/Stop
+    - Player Loaded/Unloaded
+- Choose to remove player jobs when entering prison
+- Supports citizenid table for lifers
+- Support for qb-prisonjobs
+    - Paid script by xThrasherrr#6666
+    - Adds more prison jobs
+    - Adds more variety/randomness to crafting
+    - Uses b1-skillz for lifting weights/chinups w/ cooldown
+    - Prison Trader
+    - More Items to be found
 
 -----------------------------------------------------------------------------------------------------------------
 
@@ -73,64 +90,6 @@ end)
 
 -----------------------------------------------------------------------------------------------------------------
 
-### Optional: If you have fivem-appearance, add this to your config.lua under Config.Outfits = {}
-
-Use your own numbers, but this is a baseline of what to look for.
-
-```lua
-    ["unemployed"] = {
-        ["male"] = {
-            {
-                name = "Prisoner",
-                outfitData = {
-                    ["arms"] = {item = 0, texture = 0}, -- Arms
-                    ["t-shirt"] = {item = 15, texture = 3}, -- T-Shirt
-                    ["torso2"] = {item = 167, texture = 0}, -- Jackets
-                    ["vest"] = {item = 0, texture = 0}, -- Vest
-                    ["decals"] = {item = 0, texture = 0}, -- Decals
-                    ["accessory"] = {item = 0, texture = 0}, -- Neck
-                    ["bag"] = {item = 0, texture = 0}, -- Bag
-                    ["pants"] = {item = 5, texture = 7}, -- Pants
-                    ["shoes"] = {item = 111, texture = 0}, -- Shoes
-                    ["mask"] = {item = 0, texture = 0}, -- Mask
-                    ["hat"] = {item = -1, texture = 0}, -- Hat
-                    ["glass"] = {item = 0, texture = 0}, -- Glasses
-                    ["ear"] = {item = 0, texture = 0} -- Ear accessories
-                },
-                grades = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-            },
-        },
-        ["female"] = {
-            {
-                name = "Prisoner",
-                outfitData = {
-                    ["arms"] = {item = 105, texture = 0}, -- Arms
-                    ["t-shirt"] = {item = 39, texture = 3}, -- T-Shirt
-                    ["torso2"] = {item = 7, texture = 1}, -- Jackets
-                    ["vest"] = {item = 0, texture = 0}, -- Vest
-                    ["decals"] = {item = 0, texture = 0}, -- Decals
-                    ["accessory"] = {item = 96, texture = 0}, -- Neck
-                    ["bag"] = {item = 0, texture = 0}, -- Bag
-                    ["pants"] = {item = 34, texture = 0}, -- Pants
-                    ["shoes"] = {item = 29, texture = 0}, -- Shoes
-                    ["mask"] = {item = 0, texture = 0}, -- Mask
-                    ["hat"] = {item = -1, texture = 0}, -- Hat
-                    ["glass"] = {item = 0, texture = 0}, -- Glasses
-                    ["ear"] = {item = 0, texture = 0} -- Ear accessories
-                },
-                grades = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-            },
-        },
-    },
-```
-
------------------------------------------------------------------------------------------------------------------
-
-## Future Updates / WIP: 
-- Prison Lifer Job (Work In Progress)
-- Create CitizenID Table for Lifers - They will not get time reduction
-
------------------------------------------------------------------------------------------------------------------
 
 ## Dependencies:
 
@@ -139,7 +98,6 @@ Use your own numbers, but this is a baseline of what to look for.
 - qb-menu https://github.com/qbcore-framework/qb-menu
 - qb-lock https://github.com/Tex27/qb-lock
 - OPTIONAL FOR PRISON SHIV: Custom-Weapons https://github.com/NoobySloth/Custom-Weapons
-- OPTIONAL FOR JOB CLOTHING: fivem-appearance https://github.com/iLLeniumStudios/fivem-appearance
 - OPTIONAL FOR CONFIG:
 	- ps-ui https://github.com/Project-Sloth/ps-ui
 	- qb-skillbar https://github.com/qbcore-framework/qb-skillbar
@@ -152,7 +110,8 @@ Use your own numbers, but this is a baseline of what to look for.
 ## Credits:
 - IN1GHTM4R3 - https://github.com/IN1GHTM4R3/qb-prison - The Original Resource
 - Primal#4155 - Original Targeting
-- xViperAG https://github.com/xViperAG - Picked up the project!
+- xViperAG https://github.com/xViperAG - New rework
+- xThrasherrr https://github.com/xThrasherrr - New Rework
 - NoobySloth - Created Prison Shank Model
 - QB-Core Framework - For creating the framework!
 - Jimathy666 - Inspiration on the Locker Spawn (jim-mechanic)
