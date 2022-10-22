@@ -1,4 +1,5 @@
 local locker = {}
+local propModel = "p_cs_locker_01_s"
 
 --------------------------------------
 -- PRISON STASH (PD STASH INSPIRED) --
@@ -47,94 +48,48 @@ end)
 
 CreateThread(function()
     if Config.Gabz then
-	    for k, v in pairs(Config.Lockers) do
-	    	RequestModel(`p_cs_locker_01_s`) 
-        while not HasModelLoaded(`p_cs_locker_01_s`) do 
-            Citizen.Wait(2) 
+        for k, v in pairs(Config.Lockers) do
+            RequestModel(propModel) while not HasModelLoaded(propModel) do Wait(0) end
+            local prop = CreateObject(propModel, v.coords.x, v.coords.y, v.coords.z - 1.0, false, false, false)
+            SetEntityHeading(prop, v.coords.w - 180)
+            FreezeEntityPosition(prop, true)
         end
-        locker[#locker+1] = CreateObject(`p_cs_locker_01_s`,v.coords.x, v.coords.y, v.coords.z-1,false,false,false)
-	    SetEntityHeading(locker[#locker], v.coords.w - 180)
-	    FreezeEntityPosition(locker[#locker], true)
-            exports['qb-target']:AddBoxZone("lockers"..k, v.coords, 1.5, 1.6, { 
-                name = "lockers"..k, 
-                heading = v.coords.w, 
-                debugPoly = false, 
-                minZ = v.coords.z-1, 
-                maxZ = v.coords.z+1.4, 
-            }, { 
-                options = { 
-                    {
-                        type = "client",
-                        event = "prison:stash",
-                        icon = "fas fa-box-open",
-                        label = "Open Prisoner Stash",
-                        canInteract = function()
-                            if inJail then
-                                return true
-                            else 
-                                return false
-                            end
-                        end,
-                    },
-                    {
-                        type = "client",
-                        event = "prison:OpenLocker",
-                        icon = "fas fa-box-open",
-                        label = "Force Open Locker",
-                        job = {
-                            ['police'] = 0,
-                        },
-                    } 
-                }, 
-                distance = 2.5,
-            })
+    else
+        for k, v in pairs(Config.LockersQB) do
+            RequestModel(propModel) while not HasModelLoaded(propModel) do Wait(0) end
+            local prop = CreateObject(propModel, v.coords.x, v.coords.y, v.coords.z - 1.0, false, false, false)
+            SetEntityHeading(prop, v.coords.w - 180)
+            FreezeEntityPosition(prop, true)
         end
     end
 end)
 
 CreateThread(function()
-    if Config.QBCore then
-	    for k, v in pairs(Config.LockersQB) do
-	    	RequestModel(`p_cs_locker_01_s`) 
-        while not HasModelLoaded(`p_cs_locker_01_s`) do 
-            Citizen.Wait(2) 
-        end
-        locker[#locker+1] = CreateObject(`p_cs_locker_01_s`,v.coords.x, v.coords.y, v.coords.z-1,false,false,false)
-	    SetEntityHeading(locker[#locker], v.coords.w - 180)
-	    FreezeEntityPosition(locker[#locker], true)
-            exports['qb-target']:AddBoxZone("lockers"..k, v.coords, 1.5, 1.6, { 
-                name = "lockers"..k, 
-                heading = v.coords.w, 
-                debugPoly = false, 
-                minZ = v.coords.z-1, 
-                maxZ = v.coords.z+1.4, 
-            }, { 
-                options = { 
-                    {
-                        type = "client",
-                        event = "prison:stash",
-                        icon = "fas fa-box-open",
-                        label = "Open Prisoner Stash",
-                        canInteract = function()
-                            if inJail then
-                                return true
-                            else 
-                                return false
-                            end
-                        end,
-                    },
-                    {
-                        type = "client",
-                        event = "prison:OpenLocker",
-                        icon = "fas fa-box-open",
-                        label = "Force Open Locker",
-                        job = {
-                            ['police'] = 0,
-                        },
-                    } 
-                }, 
-                distance = 2.5,
-            })
-        end
-    end
+    exports['qb-target']:AddTargetModel(propModel, {
+        options = { 
+            {
+                type = "client",
+                event = "prison:stash",
+                icon = "fas fa-box-open",
+                label = "Open Prisoner Stash",
+                canInteract = function()
+                    if inJail then
+                        return true
+                    else 
+                        return false
+                    end
+                end,
+            },
+            {
+                type = "client",
+                event = "prison:OpenLocker",
+                icon = "fas fa-box-open",
+                label = "Force Open Locker",
+                job = {
+                    ['police'] = 0,
+                },
+            } 
+        }, 
+        distance = 2.5,
+    })
 end)

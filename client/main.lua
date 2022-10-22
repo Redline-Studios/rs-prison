@@ -1034,10 +1034,14 @@ CreateThread(function()
 end)
 
 RegisterCommand('jailtime', function()
-	if not LiferCheck() then
-		Time = GetJailTime()
-		QBCore.Functions.Notify("You are in jail for "..Time.." months.","error")
+	if inJail then
+		if not LiferCheck() then
+			Time = GetJailTime()
+			QBCore.Functions.Notify("You are in jail for "..Time.." months.","error")
+		else
+			QBCore.Functions.Notify("You are in jail for life! Criminal Scum!","error")
+		end
 	else
-		QBCore.Functions.Notify("You are in jail for life! Criminal Scum!","error")
+		QBCore.Functions.Notify("You're not in jail!","error")
 	end
 end)
