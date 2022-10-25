@@ -7,6 +7,7 @@ TimeBlip = nil
 ShopBlip = nil
 WorkBlip = nil
 PlayerJob = {}
+local RandomStartPosition
 
 local PlayerData = QBCore.Functions.GetPlayerData()
 local sharedItems = QBCore.Shared.Items
@@ -238,7 +239,11 @@ RegisterNetEvent('prison:client:Enter', function(time)
 	while not IsScreenFadedOut() do
 		Wait(10)
 	end
-	local RandomStartPosition = Config.Locations.spawns[math.random(1, #Config.Locations.spawns)]
+	if Config.PrisonMap == 'gabz' then
+		RandomStartPosition = Config.Locations.GabzSpawns[math.random(1, #Config.Locations.GabzSpawns)]
+	else
+		RandomStartPosition = Config.Locations.QBSpawns[math.random(1, #Config.Locations.QBSpawns)]
+	end
 	SetEntityCoords(PlayerPedId(), RandomStartPosition.coords.x, RandomStartPosition.coords.y, RandomStartPosition.coords.z - 0.9, 0, 0, 0, false)
 	SetEntityHeading(PlayerPedId(), RandomStartPosition.coords.w)
 	PrisonClothes()
