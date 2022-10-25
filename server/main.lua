@@ -2,6 +2,14 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 local AlarmActivated = false
 
+RegisterNetEvent('prison:server:RemovePrisonBreakItems', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    Player.Functions.RemoveItem('electronickit', 1)
+    Player.Functions.RemoveItem('trojan_usb', 1)
+end)
+
 RegisterNetEvent('prison:server:SetJailStatus', function(jailTime)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -103,25 +111,6 @@ QBCore.Functions.CreateCallback('prison:server:IsAlarmActive', function(source, 
     cb(AlarmActivated)
 end)
 
------------------------------
--- REQUIRED CUP ITEM (WIP) --
------------------------------
-
---[[QBCore.Functions.CreateCallback('prison:server:GetItemsNeeded', function(source, cb, item)
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    if Player ~= nil then
-        local Drill = Player.Functions.GetItemByName(item)
-        if Drill ~= nil then
-            cb(true)
-        else
-            cb(false)
-        end
-    else
-        cb(false)
-    end
-end)]]--
-
 ---------------------
 -- CRAFTING ITEMS --
 ---------------------
@@ -173,42 +162,3 @@ QBCore.Functions.CreateCallback('qb-prison:server:CraftingMaterials', function(s
         end
     end
 end)
-
-
---------------------
--- UNUSED -- WIP --
---------------------
-
---- Going to try and make work for lifers to main these jobs as well with rep xp etc.
-
---[[ local PrisonJobs = {
-	"electrician",
-	"cook",
-	"janitor",
-}
-
-function IsPrisonJob(job)
-    local retval = false
-    for k, v in pairs(PrisonJobs) do
-        if v == job then
-            retval = true
-        end
-    end
-    return retval
-end
-
-RegisterServerEvent('qb-prison:server:prisonwork')
-AddEventHandler('qb-prison:server:prisonwork', function(job)
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    local Ped = GetPlayerPed(src)
-    local PedCoords = GetEntityCoords(Ped)
-    local JobInfo = QBCore.Shared.Jobs[job]
-
-    if (#(PedCoords - Config.Locations.jobs["work"].coords) >= 20.0) then
-        return DropPlayer(source, "Attempted exploit abuse")
-    end
-
-    Player.Functions.SetJob(job, 0)
-    TriggerClientEvent('QBCore:Notify', src, 'Congratulations with your new job! ('..JobInfo.label..')')
-end) ]]--
