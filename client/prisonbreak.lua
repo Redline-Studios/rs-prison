@@ -1,8 +1,8 @@
 local currentGate = 0
-local requiredItemsShowed = false
-local requiredItems = {}
 local inRange = false
 local securityLockdown = false
+local psvar = Config.PrisonBreak.Hack.PSVAR
+local psthermite =  Config.PrisonBreak.Hack.PSThermite
 
 local Gates = {
     [1] = {
@@ -22,47 +22,85 @@ local Gates = {
     }
 }
 
--- Functions
-
-local function OnHackDone(success)
-    if success then
-        TriggerServerEvent("prison:server:SetGateHit", currentGate)
-		TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
-		TriggerEvent('mhacking:hide')
-    else
-        TriggerServerEvent("prison:server:SecurityLockdown")
-		TriggerEvent('mhacking:hide')
-	end
-end
-
 -- Events
 
-RegisterNetEvent('electronickit:UseElectronickit', function()
+RegisterNetEvent('qb-prison:StartPrisonBreak', function()
+    local hasElecKit = QBCore.Functions.HasItem('electronickit')
+    local hasTrojan = QBCore.Functions.HasItem('trojan_usb')
+
     if currentGate ~= 0 and not securityLockdown and not Gates[currentGate].hit then
-        QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-            if result then
-                TriggerEvent('inventory:client:requiredItems', requiredItems, false)
-                QBCore.Functions.Progressbar("hack_gate", "Electronic kit plug in..", math.random(5000, 10000), false, true, {
-                    disableMovement = true,
-                    disableCarMovement = true,
-                    disableMouse = false,
-                    disableCombat = true,
-                }, {
-                    animDict = "anim@gangops@facility@servers@",
-                    anim = "hotwire",
-                    flags = 16,
-                }, {}, {}, function() -- Done
-                    StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                    TriggerEvent("mhacking:show")
-                    TriggerEvent("mhacking:start", math.random(5, 9), math.random(10, 18), OnHackDone)
-                end, function() -- Cancel
-                    StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                    QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
-                end)
-            else
-                QBCore.Functions.Notify(Lang:t("error.item_missing"), "error")
-            end
-        end, "gatecrack")
+        if hasElecKit and hasTrojan then
+            QBCore.Functions.Progressbar("hack_gate", "Setting up the prison break..", math.random(5000, 10000), false, true, {
+                disableMovement = true,
+                disableCarMovement = true,
+                disableMouse = false,
+                disableCombat = true,
+            }, {
+                animDict = "anim@gangops@facility@servers@",
+                anim = "hotwire",
+                flags = 16,
+            }, {}, {}, function() -- Done
+                StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
+                if psvar.enable then
+                    exports['ps-ui']:VarHack(function(success)
+                        if success then
+                            QBCore.Functions.Progressbar("prisonbreak", "Hacking the gate...", (Config.PrisonBreak.Time * 1000), false, true, {
+                                disableMovement = false,
+                                disableCarMovement = true,
+                                disableMouse = false,
+                                disableCombat = true,
+                            }, {
+                                animDict = "anim@gangops@facility@servers@",
+                                anim = "hotwire",
+                                flags = 0,
+                            }, {}, {}, function()
+                                ClearPedTasks(PlayerPedId())
+                                TriggerServerEvent("prison:server:SetGateHit", currentGate)
+                                TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
+                            end, function() -- Cancel
+                                QBCore.Functions.Notify("Canceled...", "error")
+                                ClearPedTasks(PlayerPedId())
+                            end)
+                        else
+                            TriggerServerEvent("prison:server:SecurityLockdown")
+                            QBCore.Functions.Notify("You failed the hack!", "error")
+                            ClearPedTasks(PlayerPedId())
+                        end
+                     end, psvar.blocks, psvar.time) -- Number of Blocks, Time (seconds)
+                elseif psthermite.enable then
+                    exports['ps-ui']:Thermite(function(success)
+                        if success then
+                            QBCore.Functions.Progressbar("prisonbreak", "Hacking the gate...", (Config.PrisonBreak.Time * 1000), false, true, {
+                                disableMovement = false,
+                                disableCarMovement = true,
+                                disableMouse = false,
+                                disableCombat = true,
+                            }, {
+                                animDict = "anim@gangops@facility@servers@",
+                                anim = "hotwire",
+                                flags = 0,
+                            }, {}, {}, function()
+                                ClearPedTasks(PlayerPedId())
+                                TriggerServerEvent("prison:server:SetGateHit", currentGate)
+                                TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
+                            end, function() -- Cancel
+                                QBCore.Functions.Notify("Canceled...", "error")
+                                ClearPedTasks(PlayerPedId())
+                            end)
+                        else
+                            TriggerServerEvent("prison:server:SecurityLockdown")
+                            QBCore.Functions.Notify("You failed the hack!", "error")
+                            ClearPedTasks(PlayerPedId())
+                        end
+                    end, psthermite.time, psthermite.grid, psthermite.incorrect)
+                end
+            end, function() -- Cancel
+                StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
+                QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
+            end)
+        else
+            QBCore.Functions.Notify(Lang:t("error.item_missing"), "error")
+        end
     end
 end)
 
@@ -74,7 +112,6 @@ RegisterNetEvent('prison:client:SetLockDown', function(isLockdown)
 end)
 
 RegisterNetEvent('prison:client:PrisonBreakAlert', function()
-    -- TriggerEvent("chatMessage", "ALERT", "error", "Attentie alle eenheden! Poging tot uitbraak in de gevangenis!")
     TriggerEvent('qb-policealerts:client:AddPoliceAlert', {
         timeOut = 10000,
         alertTitle = "Prison outbreak",
@@ -143,47 +180,23 @@ end)
 -- Threads
 
 CreateThread(function()
-    Wait(500)
-    requiredItems = {
-        [1] = {name = QBCore.Shared.Items["electronickit"]["name"], image = QBCore.Shared.Items["electronickit"]["image"]},
-        [2] = {name = QBCore.Shared.Items["gatecrack"]["name"], image = QBCore.Shared.Items["gatecrack"]["image"]},
-    }
     while true do
-        Wait(5)
         inRange = false
         currentGate = 0
+        local sleep = 1000
         if LocalPlayer.state.isLoggedIn then
             if PlayerJob.name ~= "police" then
                 local pos = GetEntityCoords(PlayerPedId())
-                for k, v in pairs(Gates) do
+                for k in pairs(Gates) do
                     local dist =  #(pos - Gates[k].coords)
-                    if (dist < 1.5) then
+                    if dist < 5 then
                         currentGate = k
                         inRange = true
-                        if securityLockdown then
-                            DrawText3D(Gates[k].coords.x, Gates[k].coords.y, Gates[k].coords.z, "~r~SYSTEM LOCKDOWN")
-                        elseif Gates[k].hit then
-                            DrawText3D(Gates[k].coords.x, Gates[k].coords.y, Gates[k].coords.z, "SYSTEM BREACH")
-                        elseif not requiredItemsShowed then
-                            requiredItemsShowed = true
-                            TriggerEvent('inventory:client:requiredItems', requiredItems, true)
-                        end
                     end
                 end
-
-                if not inRange then
-                    if requiredItemsShowed then
-                        requiredItemsShowed = false
-                        TriggerEvent('inventory:client:requiredItems', requiredItems, false)
-                    end
-                    Wait(1000)
-                end
-            else
-                Wait(1000)
             end
-        else
-            Wait(5000)
         end
+        Wait(sleep)
     end
 end)
 
@@ -202,11 +215,11 @@ CreateThread(function()
             RemoveBlip(ShopBlip)
             ShopBlip = nil
             TriggerServerEvent("prison:server:SecurityLockdown")
-	    if Config.PSDispatch then
-	        exports['ps-dispatch']:PrisonBreak()
+	        if Config.PSDispatch then
+	            exports['ps-dispatch']:PrisonBreak()
             else
             	TriggerEvent('prison:client:PrisonBreakAlert')
-	    end
+	        end
             TriggerServerEvent("prison:server:SetJailStatus", 0)
             TriggerServerEvent("QBCore:Server:SetMetaData", "jailitems", {})
             QBCore.Functions.Notify(Lang:t("error.escaped"), "error")
