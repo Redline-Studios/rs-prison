@@ -244,6 +244,8 @@ CreateThread(function()
                 currentLocation = math.random(1, #Config.Locations.jobs[currentJob])
                 CreatePrisonBlip()
             end
+        else
+            Wait(100)
         end
     end
 end)
