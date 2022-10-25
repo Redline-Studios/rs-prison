@@ -10,7 +10,6 @@ local Translations = {
         ["item_missing"] = "You are missing an Item..",
         ["escaped"] = "You escaped... Get the hell out of here.!",
         ["do_some_work"] = "Do some work for sentence reduction, instant job: %{currentjob} ",
-        ["workout_breather"] = "Take five and breathe. No need to stress.",
     },
     success = {
         ["found_phone"] = "You found a phone..",
@@ -19,11 +18,11 @@ local Translations = {
         ["timesup"] = "Your time is up! Check yourself out at the visitors center",
     },
     info = {
-        ["timeleft"] = "You still have to... %{JAILTIME} months",
+        ["timeleft"] = "Time Left: %{JAILTIME} months",
         ["lost_job"] = "You're Unemployed",
         ["sent_jail"] = "You've been sent to jail, but kept your job. Nice!",
-        ["prison_stash"] = 'Prison Stash',
-        ["slot"] = 'Insert Citizen ID',
+        ["prison_stash"] = "Enter the Prisoner's CID",
+        ["slot"] = "Citizen ID",
     }
 }
 Lang = Locale:new({
