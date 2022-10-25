@@ -3,9 +3,20 @@ Config = {}
 -------------------
 -- Debug Configs --
 -------------------
-Config.Debug = false -- Set to true for server/client prints
+Config.Debug = true -- Set to true for server/client prints
 Config.DebugPoly = true -- Set to true to debug PolyZones
 Config.Crafting = false -- Set to false to disable crafting or if you own qb-prisonjobs
+
+-------------------------
+--Extra Config Options --
+-------------------------
+Config.PrisonMap =  'gabz' -- Set to 'gabz' or 'qb'
+Config.RemoveJobs = false -- Set to true if you don't want to remove player's job.
+Config.Delay = 5 -- Workout Cooldown
+
+-- If you are using qb-prisonjobs by xThrasherrr#6666 then set this to true
+-- https://thrasherrrdev.tebex.io/package/5226873
+Config.QB_PrisonJobs = true -- Set to true if using qb-prisonjobs
 
 ----------------------
 ------- Lifers -------
@@ -13,7 +24,7 @@ Config.Crafting = false -- Set to false to disable crafting or if you own qb-pri
 -- Add Citizen IDs here
 -- Their time will not reduce
 Config.Lifers = {
-    -- Enter Citizen ID
+    'MIR51259'
 }
 
 ----------------------
@@ -23,12 +34,33 @@ Config.Lifers = {
 Config.PSDispatch = true -- Set to true for using ps-dispatch
 --[[
 
-COMING SOON!
+COMING SOON! - Make PR if you have it :)
 
 Config.CoreDispatch = false -- Set to true for using Core_Dispatch
 Config.CDDispatch = false -- Set to true for using cd-dispatch
 
 ]]--
+
+----------------------------------
+------ Prison Break Configs ------
+----------------------------------
+
+Config.PrisonBreak = {
+    Time = math.random(10, 20), -- If success, how long it the progressbar takes to open the gate (set in seconds)
+    Hack = { -- Enable one of these hacks
+        PSVAR = {
+            enable = true,
+            blocks = 2,
+            time = 20
+        },
+        PSThermite = {
+            enable = false,
+            time = 20,
+            grid = 5,
+            incorrect = 3
+        }
+    }
+}
 
 ------------------------------
 ------ Minigame Configs ------
@@ -72,7 +104,7 @@ Config.SodaMiniGame = {
         incorrect = 5
     },
     PSCircle = {
-        enabled = false,
+        enabled = true,
         circles = 3,
         time = 15
     },
@@ -85,23 +117,11 @@ Config.SodaMiniGame = {
         width = math.random(5, 15), -- How wide the static box is
     },
     QBLock = {
-        enabled = true,
+        enabled = false,
         circles = 3,
         time = 15
     },
 }
-
--------------------------
---Extra Config Options --
--------------------------
--- Config.QBCore = false -- Set to true if using QBCore's prison_map
-Config.Gabz = true -- Set to true if using cfx-gabz-prison
-Config.RemoveJobs = false -- Set to true if you don't want to remove player's job.
-Config.Delay = 5 -- Workout Cooldown
-
--- If you are using qb-prisonjobs by xThrasherrr#6666 then set this to true
--- https://thrasherrrdev.tebex.io/package/5226873
-Config.QB_PrisonJobs = true -- Set to true if using qb-prisonjobs
 
 ----------------------
 -- Location Configs --
@@ -109,7 +129,9 @@ Config.QB_PrisonJobs = true -- Set to true if using qb-prisonjobs
 
 Config.CheckTimeLocation = vector3(1827.3, 2587.72, 46.01)
 Config.CraftingLocation = vector4(1669.21, 2566.56, 45.56, 270)
-Config.Lockers = {
+
+-- ONLY USED IF Config.Map = 'gabz'
+Config.GabzLockers = {
 
     -- Cells 1 through 13
 
@@ -146,7 +168,8 @@ Config.Lockers = {
 
 }
 
---[[Config.LockersQB = {
+-- ONLY USED IF Config.Map = 'qb'
+Config.QBLockers = {
 
     -- Cells 1 through 13
 
@@ -181,7 +204,7 @@ Config.Lockers = {
     { coords = vector4(1774.54, 2483.99, 45.74, 119.67), }, -- Cell 26
     { coords = vector4(1777.72, 2485.75, 49.69, 119.67), }, -- Cell 27
 
-}]]--
+}
 
 -----------------
 -- Job Configs --
@@ -217,20 +240,20 @@ Config.PrisonWage = 10
 Config.Outfits = {
     male = {
         mask = { item = 0, texture = 0 },
-        arms = { item = 0, texture = 0 },
-        shirt = { item = 0, texture = 0 },
-        jacket = { item = 0, texture = 0 },
-        pants = { item = 0, texture = 0 },
-        shoes = { item = 0, texture = 0 },
+        arms = { item = 4, texture = 0 },
+        shirt = { item = 15, texture = 0 },
+        jacket = { item = 139, texture = 0 },
+        pants = { item = 125, texture = 3 },
+        shoes = { item = 18, texture = 0 },
         accessories = { item = 0, texture = 0 },
     },
     female = {
         mask = { item = 0, texture = 0 },
-        arms = { item = 0, texture = 0 },
-        shirt = { item = 0, texture = 0 },
-        jacket = { item = 0, texture = 0 },
-        pants = { item = 0, texture = 0 },
-        shoes = { item = 0, texture = 0 },
+        arms = { item = 4, texture = 0 },
+        shirt = { item = 2, texture = 0 },
+        jacket = { item = 229, texture = 0 },
+        pants = { item = 3, texture = 15 },
+        shoes = { item = 72, texture = 0 },
         accessories = { item = 0, texture = 0 },
     },
 }
@@ -449,134 +472,38 @@ Config.Locations = {
             coords = vector4(1752.54, 2474.74, 45.74, 247.44)
         },
     },
-
-    -- QBCORE LOCATIONS
-    --[[QBspawns = {
-        [1] = { -- Cell 1
-            animation = "lean3",
-            coords = vector4(1768.61, 2501.28, 45.74, 120.24)
+    PrisonBreak = {
+        [1] = {
+            coords = vector4(1817.47, 2602.68, 45.6, 0),
+            length = 0.5,
+            width = 0.5,
         },
-        [2] = { -- Cell 2
-            animation = "sitchair4",
-            coords = vector4(1763.76, 2498.79, 45.74, 302.21)
+        [2] = {
+            coords = vector4(1819.49, 2604.7, 45.58, 0),
+            length = 0.5,
+            width = 0.5,
         },
-        [3] = { -- Cell 3
-            animation = "cop2",
-            coords = vector4(1760.31, 2498.47, 45.74, 211.6)
+        [3] = {
+            coords = vector4(1846.01, 2604.7, 45.58, 0),
+            length = 0.5,
+            width = 0.5,
         },
-        [4] = { -- Cell 4
-            animation = "pushup",
-            coords = vector4(1754.98, 2493.67, 45.74, 211.23)
+        [4] = {
+            coords = vector4(1843.97, 2602.67, 45.6, 0),
+            length = 0.5,
+            width = 0.5,
         },
-        [5] = { -- Cell 5
-            animation = "finger2",
-            coords = vector4(1751.64, 2491.95, 45.74, 206.71)
+        [5] = {
+            coords = vector4(1804.78, 2616.29, 45.54, 0),
+            length = 0.5,
+            width = 0.5,
         },
-        [6] = { -- Cell 6
-            animation = "bringiton",
-            coords = vector4(1748.6, 2489.97, 45.74, 212.25)
+        [6] = {
+            coords = vector4(1804.79, 2617.49, 45.54, 0),
+            length = 0.5,
+            width = 0.5,
         },
-        [7] = { -- Cell 7
-            animation = "sitchair",
-            coords = vector4(1766.99, 2500.5, 49.69, 302.02)
-        },
-        [8] = { -- Cell 8
-            animation = "lean4",
-            coords = vector4(1763.47, 2500.56, 49.69, 215.63)
-        },
-        [9] = { -- Cell 9
-            animation = "impatient",
-            coords = vector4(1762.5, 2495.82, 49.69, 209.08)
-        },
-        [10] = { -- Cell 10
-            animation = "clown",
-            coords = vector4(1758.24, 2495.23, 49.69, 215.26)
-        },
-        [11] = {-- Cell 11
-            animation = "comeatmebro",
-            coords = vector4(1755.04, 2493.39, 49.69, 214.06)
-        },
-        [12] = {-- Cell 12
-            animation = "crossarms",
-            coords = vector4(1751.68, 2491.84, 49.69, 212.38)
-        },
-        [13] = {-- Cell 13
-            animation = "cutthroat",
-            coords = vector4(1748.85, 2489.88, 49.69, 29.52)
-        },
-        [14] = {-- Cell 14
-            animation = "situp",
-            coords = vector4(1758.43, 2472.26, 45.74, 212.8)
-        },
-        [15] = {-- Cell 15
-            animation = "damn",
-            coords = vector4(1761.64, 2474.12, 45.74, 31.27)
-        },
-        [16] = {-- Cell 16
-            animation = "damn2",
-            coords = vector4(1764.61, 2476.1, 45.74, 32.23)
-        },
-        [17] = {-- Cell 17
-            animation = "facepalm4",
-            coords = vector4(1766.61, 2477.54, 45.74, 302.08)
-        },
-        [18] = {-- Cell 18
-            animation = "fightme2",
-            coords = vector4(1771.02, 2480.06, 45.74, 301.89)
-        },
-        [19] = {-- Cell 19
-            animation = "fightme",
-            coords = vector4(1773.61, 2481.45, 45.74, 122.67)
-        },
-        [20] = {-- Cell 20
-            animation = "flex",
-            coords = vector4(1777.21, 2483.37, 45.74, 30.68)
-        },
-        [21] = {-- Cell 21
-            animation = "fallasleep",
-            coords = vector4(1757.3, 2472.19, 49.69, 303.42)
-        },
-        [22] = {-- Cell 22
-            animation = "flipoff",
-            coords = vector4(1761.34, 2474.36, 49.69, 32.06)
-        },
-        [23] = {-- Cell 23
-            animation = "gangsign",
-            coords = vector4(1764.59, 2476.51, 49.69, 32.25)
-        },
-        [24] = {-- Cell 24
-            animation = "gangsign2",
-            coords = vector4(1767.49, 2478.6, 49.69, 33.47)
-        },
-        [25] = {-- Cell 25
-            animation = "hammer",
-            coords = vector4(1771.74, 2478.57, 49.69, 213.39)
-        },
-        [26] = {-- Cell 26
-            animation = "knock",
-            coords = vector4(1772.6, 2483.12, 49.69, 31.92)
-        },
-        [27] = {-- Cell 27
-            animation = "knucklecrunch",
-            coords = vector4(1777.3, 2483.17, 49.69, 32.5)
-        },
-        [28] = {-- Training Room
-            animation = "chinup",
-            coords = vector4(1746.61, 2481.72, 45.74, 120.24)
-        },
-        [29] = {-- Training Room
-            animation = "yoga",
-            coords = vector4(1744.93, 2477.94, 45.76, 300.99)
-        },
-        [30] = {-- Training Room
-            animation = "yoga",
-            coords = vector4(1744.31, 2479.47, 45.76, 301.23)
-        },
-        [31] = {-- Break Room
-            animation = "sitchair4",
-            coords = vector4(1752.54, 2474.74, 45.74, 247.44)
-        },
-    }]]--
+    }
 }
 
 ---------------------
@@ -638,7 +565,6 @@ Config.CoffeeItems = {
 ----------------------
 -- Crafting Configs --
 ----------------------
-
 -- Chance to receive crafting items
 Config.CraftingItemChance = 25 -- 25% Chance to Receive Crafting Item
 
