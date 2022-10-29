@@ -162,3 +162,14 @@ QBCore.Functions.CreateCallback('qb-prison:server:CraftingMaterials', function(s
         end
     end
 end)
+
+-- Check if stash exist
+QBCore.Functions.CreateCallback('qb-prison:server:DoesStashExist', function(source, cb, stashID)
+    local retval = false
+    local result = MySQL.Sync.fetchSingle('SELECT * from stashitems WHERE stash = ?', {stashID})
+
+    if result then
+        retval = true
+    end
+    cb(retval)
+end)

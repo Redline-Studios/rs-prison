@@ -60,23 +60,28 @@ RegisterNetEvent('qb-prison:client:ForceOpenLocker', function(data)
         if Config.Debug then
             print("prisonstash_"..locker.citizenid)
         end
-
-        QBCore.Functions.Progressbar('opening_prisonlocker', 'Opening the locker...', 2000, false, true, {
-            disableMovement = true,
-            disableCarMovement = true,
-            disableMouse = false,
-            disableCombat = true,
-        }, {
-            animDict = 'anim@gangops@facility@servers@',
-            anim = 'hotwire',
-            flags = 16,
-        }, {}, {}, function()
-            ClearPedTasks(PlayerPedId())
-            TriggerServerEvent("inventory:server:OpenInventory", "stash", "prisonstash_"..locker.citizenid)
-            TriggerEvent("inventory:client:SetCurrentStash", "prisonstash_"..locker.citizenid)
-        end, function()
-            QBCore.Functions.Notify('Canceled...', 'error', 5000)
-        end)
+        QBCore.Functions.TriggerCallback('qb-prison:server:DoesStashExist', function(stashExist)
+            if stashExist then
+                QBCore.Functions.Progressbar('opening_prisonlocker', 'Opening the locker...', 2000, false, true, {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true,
+                }, {
+                    animDict = 'anim@gangops@facility@servers@',
+                    anim = 'hotwire',
+                    flags = 16,
+                }, {}, {}, function()
+                    ClearPedTasks(PlayerPedId())
+                    TriggerServerEvent("inventory:server:OpenInventory", "stash", "prisonstash_"..locker.citizenid)
+                    TriggerEvent("inventory:client:SetCurrentStash", "prisonstash_"..locker.citizenid)
+                end, function()
+                    QBCore.Functions.Notify('Canceled...', 'error', 5000)
+                end)
+            else
+                QBCore.Functions.Notify('There\'s no locker assigned to this prisoner!', 'error', 5000)
+            end
+        end, "prisonstash_"..locker.citizenid)
     else
         exports['qb-menu']:closeMenu()
     end
@@ -88,7 +93,6 @@ end)
 
 RegisterNetEvent('qb-prison:client:RemoveLockers', function()
     for k,v in pairs(locker) do
-        print(k,v)
         DeleteObject(v)
     end
 
