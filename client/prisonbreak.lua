@@ -55,6 +55,7 @@ RegisterNetEvent('qb-prison:StartPrisonBreak', function()
                                 flags = 0,
                             }, {}, {}, function()
                                 ClearPedTasks(PlayerPedId())
+                                TriggerServerEvent('prison:server:RemovePrisonBreakItems')
                                 TriggerServerEvent("prison:server:SetGateHit", currentGate)
                                 TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
                             end, function() -- Cancel
@@ -81,6 +82,7 @@ RegisterNetEvent('qb-prison:StartPrisonBreak', function()
                                 flags = 0,
                             }, {}, {}, function()
                                 ClearPedTasks(PlayerPedId())
+                                TriggerServerEvent('prison:server:RemovePrisonBreakItems')
                                 TriggerServerEvent("prison:server:SetGateHit", currentGate)
                                 TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
                             end, function() -- Cancel
