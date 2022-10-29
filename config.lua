@@ -3,20 +3,36 @@ Config = {}
 -------------------
 -- Debug Configs --
 -------------------
-Config.Debug = true -- Set to true for server/client prints
-Config.DebugPoly = true -- Set to true to debug PolyZones
-Config.Crafting = false -- Set to false to disable crafting or if you own qb-prisonjobs
+Config.Debug = false -- Set to true for server/client prints
+Config.DebugPoly = false -- Set to true to debug PolyZones
+Config.Crafting = true -- Set to false to disable crafting or if you own qb-prisonjobs
 
 -------------------------
 --Extra Config Options --
 -------------------------
 Config.PrisonMap =  'gabz' -- Set to 'gabz' or 'qb'
 Config.RemoveJobs = false -- Set to true if you don't want to remove player's job.
-Config.Delay = 5 -- Workout Cooldown
 
 -- If you are using qb-prisonjobs by xThrasherrr#6666 then set this to true
 -- https://thrasherrrdev.tebex.io/package/5226873
-Config.QB_PrisonJobs = true -- Set to true if using qb-prisonjobs
+Config.QB_PrisonJobs = false
+
+-- If Config.QB_PrisonJobs = false, these workout vales will be used
+Config.Workout = {
+    Cooldown = 20, -- Cooldown between workouts
+    Chinup = {
+        coords = vector3(1745.91, 2481.26, 45.74),
+        time = math.random(10, 20) -- How long to do chinups (set in seconds)
+    },
+    Yoga = {
+        Minigame = {
+            circles = 5,
+            time = math.random(25, 35)
+        },
+        time = math.random(10, 20), -- How long to do yoga (set in seconds)
+        stress = 5 -- How much stress is removed from doing yoga
+    }
+}
 
 ----------------------
 ------- Lifers -------
@@ -24,7 +40,7 @@ Config.QB_PrisonJobs = true -- Set to true if using qb-prisonjobs
 -- Add Citizen IDs here
 -- Their time will not reduce
 Config.Lifers = {
-    'MIR51259'
+    'YOUR-CID-HERE'
 }
 
 ----------------------
@@ -41,12 +57,38 @@ Config.CDDispatch = false -- Set to true for using cd-dispatch
 
 ]]--
 
+--------------------
+-- Outifts Config --
+--------------------
+
+Config.Outfits = { -- Set their prion outfits when they go to jail
+    enabled = true, -- If false, outfits wont change
+    male = {
+        mask = { item = 0, texture = 0 },
+        arms = { item = 4, texture = 0 },
+        shirt = { item = 15, texture = 0 },
+        jacket = { item = 139, texture = 0 },
+        pants = { item = 125, texture = 3 },
+        shoes = { item = 18, texture = 0 },
+        accessories = { item = 0, texture = 0 },
+    },
+    female = {
+        mask = { item = 0, texture = 0 },
+        arms = { item = 4, texture = 0 },
+        shirt = { item = 2, texture = 0 },
+        jacket = { item = 229, texture = 0 },
+        pants = { item = 3, texture = 15 },
+        shoes = { item = 72, texture = 0 },
+        accessories = { item = 0, texture = 0 },
+    },
+}
+
 ----------------------------------
 ------ Prison Break Configs ------
 ----------------------------------
 
 Config.PrisonBreak = {
-    Time = math.random(10, 20), -- If success, how long it the progressbar takes to open the gate (set in seconds)
+    Time = math.random(10, 20), -- If success, how long the progressbar takes to open the gate (set in seconds)
     Hack = { -- Enable one of these hacks
         PSVAR = {
             enable = true,
@@ -232,31 +274,6 @@ Config.PrisonJobs = {
 }
 
 Config.PrisonWage = 10
-
---------------------
--- Outifts Config --
---------------------
-
-Config.Outfits = {
-    male = {
-        mask = { item = 0, texture = 0 },
-        arms = { item = 4, texture = 0 },
-        shirt = { item = 15, texture = 0 },
-        jacket = { item = 139, texture = 0 },
-        pants = { item = 125, texture = 3 },
-        shoes = { item = 18, texture = 0 },
-        accessories = { item = 0, texture = 0 },
-    },
-    female = {
-        mask = { item = 0, texture = 0 },
-        arms = { item = 4, texture = 0 },
-        shirt = { item = 2, texture = 0 },
-        jacket = { item = 229, texture = 0 },
-        pants = { item = 3, texture = 15 },
-        shoes = { item = 72, texture = 0 },
-        accessories = { item = 0, texture = 0 },
-    },
-}
 
 ----------------------------
 -- Basic Location Configs --
@@ -599,7 +616,7 @@ Config.Locations = {
             coords = vector4(1752.54, 2474.74, 45.74, 247.44)
         },
     },
-    PrisonBreak = {
+    PrisonBreak = { -- Polyzones for prison break locations
         [1] = {
             coords = vector4(1817.47, 2602.68, 45.6, 0),
             length = 0.5,
@@ -693,7 +710,7 @@ Config.CoffeeItems = {
 -- Crafting Configs --
 ----------------------
 -- Chance to receive crafting items
-Config.CraftingItemChance = 25 -- 25% Chance to Receive Crafting Item
+Config.CraftingItemChance = 25 -- 25% Chance to Receive Crafting Item when doing jobs
 
 -- Randomly find these items when doing jobs
 Config.JanitorItems = { -- Items found when cleaning
@@ -702,12 +719,14 @@ Config.JanitorItems = { -- Items found when cleaning
     [3] = { item = 'steel', amount = math.random(3,7) },
     [4] = { item = 'plastic', amount = math.random(1,2) },
 }
+
 Config.CookItems = { -- Items found when cooking
     [1] = { item = 'metalscrap', amount = math.random(1,3) },
     [2] = { item = 'rubber', amount = math.random(2,4) },
     [3] = { item = 'steel', amount = math.random(3,7) },
     [4] = { item = 'plastic', amount = math.random(1,2) },
 }
+
 Config.ElectricianItems = { -- Items found when fixing electrical
     [1] = { item = 'metalscrap', amount = math.random(1,3) },
     [2] = { item = 'rubber', amount = math.random(2,4) },
