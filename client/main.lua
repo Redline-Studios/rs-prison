@@ -6,7 +6,7 @@ CellsBlip = nil
 TimeBlip = nil
 ShopBlip = nil
 WorkBlip = nil
-PlayerJob = {}
+PlayerJob = QBCore.Functions.GetPlayerData().job
 local RandomStartPosition
 
 local PlayerData = QBCore.Functions.GetPlayerData()
@@ -182,7 +182,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 		end
 	end)
 
-	TriggerEvenet('qb-prison:client:SpawnLockers')
+	TriggerEvent('qb-prison:client:SpawnLockers')
 	PlayerJob = QBCore.Functions.GetPlayerData().job
 end)
 
@@ -232,7 +232,11 @@ AddEventHandler('onResourceStop', function(resourceName)
 end)
 
 RegisterNetEvent('prison:client:Enter', function(time)
-	QBCore.Functions.Notify( Lang:t("error.injail", {Time = time}), "error")
+	if LiferCheck() then
+		QBCore.Functions.Notify('You\'re going to be here for a VERY long time...', "error")
+	else
+		QBCore.Functions.Notify( Lang:t("error.injail", {Time = time}), "error")
+	end
 
 	TriggerEvent("chatMessage", "SYSTEM", "warning", "Your property has been seized, you'll get everything back when your time is up..")
 	DoScreenFadeOut(500)
@@ -246,7 +250,9 @@ RegisterNetEvent('prison:client:Enter', function(time)
 	end
 	SetEntityCoords(PlayerPedId(), RandomStartPosition.coords.x, RandomStartPosition.coords.y, RandomStartPosition.coords.z - 0.9, 0, 0, 0, false)
 	SetEntityHeading(PlayerPedId(), RandomStartPosition.coords.w)
-	PrisonClothes()
+	if Config.Outfits.enabled then
+		PrisonClothes()
+	end
 	Wait(500)
 	TriggerEvent('animations:client:EmoteCommandStart', {RandomStartPosition.animation})
 
@@ -1033,6 +1039,35 @@ RegisterNetEvent('qb-prison:CreateTargets', function()
 		})
 
 		table.insert(TargetsTable, "prisoncrafting")
+	end
+
+	if not Config.QB_PrisonJobs then
+		exports['qb-target']:AddBoxZone("PrisonChinUp", Config.Workout.Chinup.coords, 1, 2.0, {
+			name = "PrisonChinUp",
+			heading = 30,
+			debugPoly = Config.DebugPoly,
+			minZ = Config.Workout.Chinup.coords.z - 1,
+			maxZ = Config.Workout.Chinup.coords.z + 1,
+		}, {
+			options = {
+				{
+					type = "client",
+					event = "qb-prison:client:DoChinUp",
+					icon = "fas fa-dumbbell",
+					label = "Do Chin-Ups",
+					canInteract = function()
+						if inJail then
+							return true
+						else
+							return false
+						end
+					end,
+				},
+			},
+			distance = 1.5
+		})
+
+		table.insert(TargetsTable, "PrisonChinUp")
 	end
 
 	targetsCreated = true
