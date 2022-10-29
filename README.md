@@ -31,6 +31,9 @@
     - Configure what minigame to use for each drink machine!
         - Uses PS-UI, QB-Lock, and QB-Skillbar
         - All configurable from the config
+- Prison break!
+	- qb-target at gate panels
+	- PS-Var or PS-Thermite Minigames
 - Lockers for prisoners!
     - Adds lockers to every cell
     - Lockers open a citizenid stash
