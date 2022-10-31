@@ -1,4 +1,4 @@
--- Please use use notification-main.lua for notifications instead of chat messages
+-- Please use use notification-main.lua for notifications instead of chat messages. MAKE SURE TO DELETE THE ONE THAT YOU DO NO USE.
 
 QBCore = exports['qb-core']:GetCoreObject()
 inJail = false
