@@ -11,6 +11,12 @@
 - Forked & Modified to v1.3: xThrasherrr#6666 and xViperAG#3029
 
 -----------------------------------------------------------------------------------------------------------------
+## IMPORTANT
+- Please select either main.lua or notifications-main.lua in client/
+- main.lua uses chat messages instead of notifications
+- notifications-main.lua uses QBCore notifications
+- IF YOU PICK notifications-main.lua PLEASE DELETE MAIN.LUA AND RENAME notifications-main.lua TO MAIN.LUA
+- IF YOU PICK MAIN.LUA JUST DELETE notifications-main.lua. <3
 
 ## FEATURES:
 - Reduce your time doing jobs!
