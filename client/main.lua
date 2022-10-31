@@ -1,3 +1,5 @@
+-- Please use use notification-main.lua for notifications instead of chat messages
+
 QBCore = exports['qb-core']:GetCoreObject()
 inJail = false
 jailTime = 0
