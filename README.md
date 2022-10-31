@@ -83,12 +83,56 @@ end)
 
 -----------------------------------------------------------------------------------------------------------------
 
-### Optional: If you have ps-buffs, add this to qb-smallresources/client/consumables.lua after the SetMetaData Server Event
+### Optional: If you have ps-buffs, add this to qb-smallresources/client/consumables.lua after the SetMetaData Server Event (OLD qb-smallresources)
 
 ```lua
         if itemName == "slushy" then
             exports['ps-buffs']:AddBuff("super-thirst", 25000)
         end
+```
+
+### OLD qb-smallresources
+
+```lua
+RegisterNetEvent('consumables:client:Drink', function(itemName)
+    TriggerEvent('animations:client:EmoteCommandStart', {"water"})
+    QBCore.Functions.Progressbar("drink_something", "Drinking..", 5000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+        disableMouse = false,
+        disableCombat = true,
+    }, {}, {}, {}, function() -- Done        
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items[itemName], "remove")
+        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+        TriggerServerEvent("QBCore:Server:SetMetaData", "thirst", QBCore.Functions.GetPlayerData().metadata["thirst"] + ConsumeablesDrink[itemName])
+        if itemName == "slushy" then
+            exports['ps-buffs']:AddBuff("super-thirst", 25000)
+        end
+    end, function()
+        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+    end, itemName)
+end)
+```
+
+### NEW qb-smallresources
+
+```lua
+RegisterNetEvent('consumables:client:Drink', function(itemName)
+    TriggerEvent('animations:client:EmoteCommandStart', {"drink"})
+    QBCore.Functions.Progressbar("drink_something", "Drinking..", 5000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+        disableMouse = false,
+        disableCombat = true,
+    }, {}, {}, {}, function() -- Done
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items[itemName], "remove")
+        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+        TriggerServerEvent("consumables:server:addThirst", QBCore.Functions.GetPlayerData().metadata["thirst"] + ConsumablesDrink[itemName])
+        if itemName == "slushy" then
+            exports['ps-buffs']:AddBuff("super-thirst", 25000)
+        end
+    end)
+end)
 ```
 
 -----------------------------------------------------------------------------------------------------------------
