@@ -6,6 +6,8 @@
 ## - xViperAG
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/xviperag)
 
+# Join the [Discord](https://discord.gg/3CXrkvQVds)
+
 ## DESCRIPTION:
 - Updated Prison Script Orignially Modified by IN1GHTM4R3
 - Forked & Modified to v1.3: xThrasherrr#6666 and xViperAG#3029
@@ -31,6 +33,9 @@
     - Configure what minigame to use for each drink machine!
         - Uses PS-UI, QB-Lock, and QB-Skillbar
         - All configurable from the config
+- Prison break!
+	- qb-target at gate panels
+	- PS-Var or PS-Thermite Minigames
 - Lockers for prisoners!
     - Adds lockers to every cell
     - Lockers open a citizenid stash
@@ -80,12 +85,56 @@ end)
 
 -----------------------------------------------------------------------------------------------------------------
 
-### Optional: If you have ps-buffs, add this to qb-smallresources/client/consumables.lua after the SetMetaData Server Event
+### Optional: If you have ps-buffs, add this to qb-smallresources/client/consumables.lua after the SetMetaData Server Event (OLD qb-smallresources)
 
 ```lua
         if itemName == "slushy" then
             exports['ps-buffs']:AddBuff("super-thirst", 25000)
         end
+```
+
+### OLD qb-smallresources
+
+```lua
+RegisterNetEvent('consumables:client:Drink', function(itemName)
+    TriggerEvent('animations:client:EmoteCommandStart', {"water"})
+    QBCore.Functions.Progressbar("drink_something", "Drinking..", 5000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+        disableMouse = false,
+        disableCombat = true,
+    }, {}, {}, {}, function() -- Done        
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items[itemName], "remove")
+        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+        TriggerServerEvent("QBCore:Server:SetMetaData", "thirst", QBCore.Functions.GetPlayerData().metadata["thirst"] + ConsumeablesDrink[itemName])
+        if itemName == "slushy" then
+            exports['ps-buffs']:AddBuff("super-thirst", 25000)
+        end
+    end, function()
+        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+    end, itemName)
+end)
+```
+
+### NEW qb-smallresources
+
+```lua
+RegisterNetEvent('consumables:client:Drink', function(itemName)
+    TriggerEvent('animations:client:EmoteCommandStart', {"drink"})
+    QBCore.Functions.Progressbar("drink_something", "Drinking..", 5000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+        disableMouse = false,
+        disableCombat = true,
+    }, {}, {}, {}, function() -- Done
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items[itemName], "remove")
+        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+        TriggerServerEvent("consumables:server:addThirst", QBCore.Functions.GetPlayerData().metadata["thirst"] + ConsumablesDrink[itemName])
+        if itemName == "slushy" then
+            exports['ps-buffs']:AddBuff("super-thirst", 25000)
+        end
+    end)
+end)
 ```
 
 -----------------------------------------------------------------------------------------------------------------
