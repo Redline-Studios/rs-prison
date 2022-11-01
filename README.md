@@ -6,6 +6,8 @@
 ## - xViperAG
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/xviperag)
 
+# Join the [Discord](https://discord.gg/3CXrkvQVds)
+
 ## DESCRIPTION:
 - Updated Prison Script Orignially Modified by IN1GHTM4R3
 - Forked & Modified to v1.3: xThrasherrr#6666 and xViperAG#3029
