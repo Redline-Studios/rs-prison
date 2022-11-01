@@ -619,33 +619,33 @@ Config.Locations = {
     PrisonBreak = { -- Polyzones for prison break locations
         [1] = {
             coords = vector4(1817.47, 2602.68, 45.6, 0),
-            length = 0.5,
-            width = 0.5,
+            length = 0.6,
+            width = 0.6,
         },
         [2] = {
             coords = vector4(1819.49, 2604.7, 45.58, 0),
-            length = 0.5,
-            width = 0.5,
+            length = 0.6,
+            width = 0.6,
         },
         [3] = {
             coords = vector4(1846.01, 2604.7, 45.58, 0),
-            length = 0.5,
-            width = 0.5,
+            length = 0.6,
+            width = 0.6,
         },
         [4] = {
             coords = vector4(1843.97, 2602.67, 45.6, 0),
-            length = 0.5,
-            width = 0.5,
+            length = 0.6,
+            width = 0.6,
         },
         [5] = {
             coords = vector4(1804.78, 2616.29, 45.54, 0),
-            length = 0.5,
-            width = 0.5,
+            length = 0.6,
+            width = 0.6,
         },
         [6] = {
             coords = vector4(1804.79, 2617.49, 45.54, 0),
-            length = 0.5,
-            width = 0.5,
+            length = 0.6,
+            width = 0.6,
         },
     }
 }

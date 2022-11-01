@@ -29,6 +29,7 @@ exports('GetJailTime', GetJailTime)
 -------- CHECK FOR LIFER CITIZENID --------
 -------------------------------------------
 local function LiferCheck()
+	local cb = false
 	for _, cid in pairs(Config.Lifers) do
 		if PlayerData.citizenid == cid then
 			cb = true
@@ -41,6 +42,20 @@ local function LiferCheck()
 		end
 	end
 	return cb
+end
+
+-------------------------------------------
+------ CHECK FOR PRISON BREAK ITEMS -------
+-------------------------------------------
+local function HasPrisonBreakItems()
+	local hasElecKit = QBCore.Functions.HasItem('electronickit')
+	local hasTrojan = QBCore.Functions.HasItem('trojan_usb')
+
+	if hasElecKit and hasTrojan then
+		return true
+	else
+		return false
+	end
 end
 
 -------------------------------------------
@@ -885,33 +900,6 @@ end)
 ------------------
 -- Create Targets
 RegisterNetEvent('qb-prison:CreateTargets', function()
-	local hasElecKit = QBCore.Functions.HasItem('electronickit')
-	local hasTrojan = QBCore.Functions.HasItem('trojan_usb')
-	for k,v in pairs(Config.Locations.PrisonBreak) do
-		exports['qb-target']:AddBoxZone("prisonbreak"..k, vector3(v.coords.x, v.coords.y, v.coords.z), v.length, v.width, {
-			name = "prisonbreak"..k,
-			heading = v.coords.w,
-			debugPoly = Config.DebugPoly,
-			minZ = v.coords.z - 1,
-			maxZ = v.coords.z + 1,
-			}, {
-				options = {
-				{
-					type = "client",
-					event = "qb-prison:StartPrisonBreak",
-					icon = "fas fa-laptop-code",
-					label = "Prison Break",
-					canInteract = function()
-						if hasElecKit and hasTrojan then
-							return true
-						end
-					end
-				},
-			},
-			distance = 2,
-		})
-		table.insert(TargetsTable, "prisonbreak"..k)
-	end
 
 	CheckTime = exports['qb-target']:AddBoxZone("prisontime", vector3(1827.3, 2587.72, 46.01), 0.4, 0.55, {
         name = "prisontime",
@@ -937,6 +925,32 @@ RegisterNetEvent('qb-prison:CreateTargets', function()
         distance = 2,
     })
 	table.insert(TargetsTable, "prisontime")
+
+	for k,v in pairs(Config.Locations.PrisonBreak) do
+		exports['qb-target']:AddBoxZone("prisonbreak"..k, vector3(v.coords.x, v.coords.y, v.coords.z), v.length, v.width, {
+			name = "prisonbreak"..k,
+			heading = v.coords.w,
+			debugPoly = Config.DebugPoly,
+			minZ = v.coords.z - 1,
+			maxZ = v.coords.z + 1,
+			}, {
+				options = {
+				{
+					type = "client",
+					event = "qb-prison:StartPrisonBreak",
+					icon = "fas fa-laptop-code",
+					label = "Prison Break",
+					canInteract = function()
+						if HasPrisonBreakItems() then
+							return true
+						end
+					end
+				},
+			},
+			distance = 2,
+		})
+		table.insert(TargetsTable, "prisonbreak"..k)
+	end
 
     Canteen = exports['qb-target']:AddBoxZone("prisoncanteen", vector3(1780.95, 2560.05, 45.67), 3.8, 0.5, {
         name = "prisoncanteen",
