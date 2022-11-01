@@ -29,6 +29,7 @@ exports('GetJailTime', GetJailTime)
 -------- CHECK FOR LIFER CITIZENID --------
 -------------------------------------------
 local function LiferCheck()
+	local cb = false
 	for _, cid in pairs(Config.Lifers) do
 		if PlayerData.citizenid == cid then
 			cb = true
@@ -41,6 +42,20 @@ local function LiferCheck()
 		end
 	end
 	return cb
+end
+
+-------------------------------------------
+------ CHECK FOR PRISON BREAK ITEMS -------
+-------------------------------------------
+local function HasPrisonBreakItems()
+	local hasElecKit = QBCore.Functions.HasItem('electronickit')
+	local hasTrojan = QBCore.Functions.HasItem('trojan_usb')
+
+	if hasElecKit and hasTrojan then
+		return true
+	else
+		return false
+	end
 end
 
 -------------------------------------------
@@ -163,7 +178,6 @@ end
 ----------------------------------
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-	if LocalPlayer.state['isLoggedIn'] then
 		QBCore.Functions.GetPlayerData(function(PlayerData)
 			if PlayerData.metadata["injail"] > 0 then
 				TriggerEvent("prison:client:Enter", PlayerData.metadata["injail"])
@@ -173,8 +187,6 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 				end
 			end
 		end)
-		TriggerEvent('qb-prison:client:SpawnLockers')
-	end
 
 	QBCore.Functions.TriggerCallback('prison:server:IsAlarmActive', function(active)
 		if active then
@@ -188,8 +200,6 @@ end)
 
 AddEventHandler('onResourceStart', function(resourceName)
     if resourceName ~= GetCurrentResourceName() then return end
-	Wait(100)
-	if LocalPlayer.state['isLoggedIn'] then
 		QBCore.Functions.GetPlayerData(function(PlayerData)
 			if PlayerData.metadata["injail"] > 0 then
 				TriggerEvent("prison:client:Enter", PlayerData.metadata["injail"])
@@ -199,13 +209,13 @@ AddEventHandler('onResourceStart', function(resourceName)
 				end
 			end
 		end)
-		TriggerEvent('qb-prison:client:SpawnLockers')
-	end
 
 	QBCore.Functions.TriggerCallback('prison:server:IsAlarmActive', function(active)
 		if not active then return end
 		TriggerEvent('prison:client:JailAlarm', true)
 	end)
+
+	TriggerEvent('qb-prison:client:SpawnLockers')
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
@@ -238,7 +248,6 @@ RegisterNetEvent('prison:client:Enter', function(time)
 		QBCore.Functions.Notify( Lang:t("error.injail", {Time = time}), "error")
 	end
 
-	QBCore.Functions.Notify( Lang:t("error.injail", {Time = time}), "error")
 	QBCore.Functions.Notify( Lang:t("info.seized_property", {Time = time}), "info")
 
 	--TriggerEvent("chatMessage", "SYSTEM", "warning", "Your property has been seized, you'll get everything back when your time is up..")
@@ -254,10 +263,10 @@ RegisterNetEvent('prison:client:Enter', function(time)
 	end
 	SetEntityCoords(PlayerPedId(), RandomStartPosition.coords.x, RandomStartPosition.coords.y, RandomStartPosition.coords.z - 0.9, 0, 0, 0, false)
 	SetEntityHeading(PlayerPedId(), RandomStartPosition.coords.w)
+	Wait(500)
 	if Config.Outfits.enabled then
 		PrisonClothes()
 	end
-	Wait(500)
 	TriggerEvent('animations:client:EmoteCommandStart', {RandomStartPosition.animation})
 
 	inJail = true
@@ -266,7 +275,7 @@ RegisterNetEvent('prison:client:Enter', function(time)
 	-- Code to Select Random Job
 	local randomJobIndex = math.random(1, #Config.PrisonJobs) -- Chooses Random Job
    	local RandomJobSelection = Config.PrisonJobs[randomJobIndex].name
-	currentJob = RandomJobSelection -- "electrician" old code
+	currentJob = RandomJobSelection
 
 	TriggerServerEvent("prison:server:SetJailStatus", jailTime)
 	TriggerServerEvent("prison:server:SaveJailItems", jailTime)
@@ -488,7 +497,7 @@ RegisterNetEvent('qb-prison:jobapplyJanitor', function(args)
 		inRange = true
         if inJail then
 			if currentJob ~= "janitor" then
-				currentJob = "janitor" --"electrician" old code
+				currentJob = "janitor"
 				CreatePrisonBlip()
 				QBCore.Functions.Notify('New Job: Janitor')
 
@@ -896,33 +905,6 @@ end)
 ------------------
 -- Create Targets
 RegisterNetEvent('qb-prison:CreateTargets', function()
-	local hasElecKit = QBCore.Functions.HasItem('electronickit')
-	local hasTrojan = QBCore.Functions.HasItem('trojan_usb')
-	for k,v in pairs(Config.Locations.PrisonBreak) do
-		exports['qb-target']:AddBoxZone("prisonbreak"..k, vector3(v.coords.x, v.coords.y, v.coords.z), v.length, v.width, {
-			name = "prisonbreak"..k,
-			heading = v.coords.w,
-			debugPoly = Config.DebugPoly,
-			minZ = v.coords.z - 1,
-			maxZ = v.coords.z + 1,
-			}, {
-				options = {
-				{
-					type = "client",
-					event = "qb-prison:StartPrisonBreak",
-					icon = "fas fa-laptop-code",
-					label = "Prison Break",
-					canInteract = function()
-						if hasElecKit and hasTrojan then
-							return true
-						end
-					end
-				},
-			},
-			distance = 2,
-		})
-		table.insert(TargetsTable, "prisonbreak"..k)
-	end
 
 	CheckTime = exports['qb-target']:AddBoxZone("prisontime", vector3(1827.3, 2587.72, 46.01), 0.4, 0.55, {
         name = "prisontime",
@@ -948,6 +930,32 @@ RegisterNetEvent('qb-prison:CreateTargets', function()
         distance = 2,
     })
 	table.insert(TargetsTable, "prisontime")
+
+	for k,v in pairs(Config.Locations.PrisonBreak) do
+		exports['qb-target']:AddBoxZone("prisonbreak"..k, vector3(v.coords.x, v.coords.y, v.coords.z), v.length, v.width, {
+			name = "prisonbreak"..k,
+			heading = v.coords.w,
+			debugPoly = Config.DebugPoly,
+			minZ = v.coords.z - 1,
+			maxZ = v.coords.z + 1,
+			}, {
+				options = {
+				{
+					type = "client",
+					event = "qb-prison:StartPrisonBreak",
+					icon = "fas fa-laptop-code",
+					label = "Prison Break",
+					canInteract = function()
+						if HasPrisonBreakItems() then
+							return true
+						end
+					end
+				},
+			},
+			distance = 2,
+		})
+		table.insert(TargetsTable, "prisonbreak"..k)
+	end
 
     Canteen = exports['qb-target']:AddBoxZone("prisoncanteen", vector3(1780.95, 2560.05, 45.67), 3.8, 0.5, {
         name = "prisoncanteen",
