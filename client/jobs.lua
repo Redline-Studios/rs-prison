@@ -36,6 +36,31 @@ function CreatePrisonBlip()
     end
 end
 
+local function GetRandomCraftingItem(job)
+    if job == 'janitor' then
+        local JanitorItem = math.random(1, #Config.JanitorItems)
+        TriggerServerEvent('qb-prison:server:GetCraftingItems', Config.JanitorItems[JanitorItem].item, Config.JanitorItems[JanitorItem].amount)
+
+        if Config.Debug then
+            print("Received "..Config.JanitorItems[JanitorItem].amount.."x "..Config.JanitorItems[JanitorItem].item.." from cleaning")
+        end
+    elseif job == 'cook' then
+        local CookItem = math.random(1, #Config.CookItems)
+        TriggerServerEvent('qb-prison:server:GetCraftingItems', Config.CookItems[CookItem].item, Config.CookItems[CookItem].amount)
+
+        if Config.Debug then
+            print("Received "..Config.CookItems[CookItem].amount.."x "..Config.CookItems[CookItem].item.." from cooking")
+        end
+    elseif job == 'electrician' then
+        local ElectricianItem = math.random(1, #Config.ElectricianItems)
+        TriggerServerEvent('qb-prison:server:GetCraftingItems', Config.ElectricianItems[ElectricianItem].item, Config.ElectricianItems[ElectricianItem].amount)
+
+        if Config.Debug then
+            print("Received "..Config.ElectricianItems[ElectricianItem].amount.."x "..Config.ElectricianItems[ElectricianItem].item.." from fixing electrical")
+        end
+    end
+end
+
 local function JobDone(data)
     if math.random(1, 100) <= 50 then
         jailTime = jailTime - math.random(1, 2)
@@ -51,7 +76,7 @@ local function JobDone(data)
     local craftingitemchance = math.random(1,100) -- Crafting Item Chance
 
     if craftingitemchance <= Config.CraftingItemChance then
-        TriggerEvent('qb-prison:client:GetCraftingItems', data)
+        GetRandomCraftingItem(data)
     end
     CreatePrisonBlip()
 end
@@ -83,7 +108,7 @@ CreateThread(function()
                                 animDict = "anim@gangops@facility@servers@",
                                 anim = "hotwire",
                                 flags = 9,
-                            }, {}, {}, function() -- Done
+                            }, {}, {}, function()
                                 Shown = false
                                 inDistance = false
                                 exports['qb-core']:HideText()
@@ -91,7 +116,7 @@ CreateThread(function()
                                 isWorking = false
                                 StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
                                 JobDone('electrician')
-                            end, function() -- Cancel
+                            end, function()
                                 isWorking = false
                                 StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
                                 QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
@@ -138,7 +163,7 @@ CreateThread(function()
                                 anim = "idle_a",
                                 flags = 9,
                                 prop = "",
-                            }, {}, {}, function() -- Done
+                            }, {}, {}, function()
                                 Shown = false
                                 inDistance = false
                                 exports['qb-core']:HideText()
@@ -146,7 +171,7 @@ CreateThread(function()
                                 isWorking = false
                                 StopAnimTask(PlayerPedId(), "amb@prop_human_bbq@male@idle_a", "idle_a", 1.0)
                                 JobDone('cook')
-                            end, function() -- Cancel
+                            end, function()
                                 isWorking = false
                                 StopAnimTask(PlayerPedId(), "amb@prop_human_bbq@male@idle_a", "idle_a", 1.0)
                                 QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
@@ -210,7 +235,7 @@ CreateThread(function()
                                 PropBone = 28422,
                                 PropPlacement = {-0.0100, 0.0400, -0.0300, 0.0, 0.0, 0.0},
 
-                            }, {}, {}, function() -- Done
+                            }, {}, {}, function()
                                 Shown = false
                                 inDistance = false
                                 exports['qb-core']:HideText()
@@ -219,7 +244,7 @@ CreateThread(function()
                                 DeleteEntity(BroomObject) -- Removes the Broom From Hands
                                 StopAnimTask(PlayerPedId(), "anim@amb@drug_field_workers@rake@male_a@base", "base", 1.0)
                                 JobDone('janitor')
-                            end, function() -- Cancel
+                            end, function()
                                 isWorking = false
                                 StopAnimTask(PlayerPedId(), "anim@amb@drug_field_workers@rake@male_a@base", "base", 1.0)
                                 QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
