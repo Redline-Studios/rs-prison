@@ -2,13 +2,6 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 local AlarmActivated = false
 
-RegisterNetEvent('prison:server:RemovePrisonBreakItems', function()
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-
-    Player.Functions.RemoveItem('electronickit', 1)
-    Player.Functions.RemoveItem('trojan_usb', 1)
-end)
 
 RegisterNetEvent('prison:server:SetJailStatus', function(jailTime)
     local src = source
@@ -38,7 +31,7 @@ end)
 RegisterNetEvent('qb-prison:server:getCommissary', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.AddMoney('cash', 5)
+    Player.Functions.AddMoney('cash', Config.PrisonWage)
 end)
 
 RegisterNetEvent('prison:server:GiveJailItems', function()
@@ -50,32 +43,6 @@ RegisterNetEvent('prison:server:GiveJailItems', function()
     end
     Wait(1000)
     Player.Functions.SetMetaData("jailitems", {})
-end)
-
-RegisterNetEvent('prison:server:SecurityLockdown', function()
-    TriggerClientEvent("prison:client:SetLockDown", -1, true)
-    for k, v in pairs(QBCore.Functions.GetPlayers()) do
-        local Player = QBCore.Functions.GetPlayer(v)
-        if Player ~= nil then
-            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-                TriggerClientEvent("prison:client:PrisonBreakAlert", v)
-            end
-        end
-	end
-end)
-
-RegisterNetEvent('prison:server:SetGateHit', function(key)
-    TriggerClientEvent("prison:client:SetGateHit", -1, key, true)
-    if math.random(1, 100) <= 50 then
-        for k, v in pairs(QBCore.Functions.GetPlayers()) do
-            local Player = QBCore.Functions.GetPlayer(v)
-            if Player ~= nil then
-                if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-                    TriggerClientEvent("prison:client:PrisonBreakAlert", v)
-                end
-            end
-        end
-    end
 end)
 
 RegisterNetEvent('prison:server:CheckRecordStatus', function()
@@ -94,19 +61,6 @@ RegisterNetEvent('prison:server:CheckRecordStatus', function()
             CriminalRecord["date"] = nil
         end
     end
-end)
-
-RegisterNetEvent('prison:server:JailAlarm', function()
-    if not AlarmActivated then
-        TriggerClientEvent('prison:client:JailAlarm', -1, true)
-        SetTimeout(5 * (60 * 1000), function()
-            TriggerClientEvent('prison:client:JailAlarm', -1, false)
-        end)
-    end
-end)
-
-QBCore.Functions.CreateCallback('prison:server:IsAlarmActive', function(source, cb)
-    cb(AlarmActivated)
 end)
 
 ---------------------
@@ -142,6 +96,17 @@ RegisterNetEvent('qb-prison:server:GetCraftedItem', function(data)
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add', 1)
 end)
 
+-- Remove Crafting Materials
+RegisterNetEvent('qb-prison:server:RemoveCraftingItems', function(item)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    for k, v in pairs(Config.CraftingItems[item].materials) do
+        Player.Functions.RemoveItem(v.item, v.amount)
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[v.item], 'remove', v.amount)
+    end
+end)
+
 -- Checks for Materials
 QBCore.Functions.CreateCallback('qb-prison:server:CraftingMaterials', function(source, cb, materials)
     local src = source
@@ -161,6 +126,66 @@ QBCore.Functions.CreateCallback('qb-prison:server:CraftingMaterials', function(s
     end
 end)
 
+----------------------------
+------- PRISON BREAK -------
+----------------------------
+-- Remove Prison Break Items
+RegisterNetEvent('prison:server:RemovePrisonBreakItems', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    for k,v in pairs(Config.PrisonBreak.Hack.Items) do
+        Player.Functions.RemoveItem(v.item, v.amount)
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[v.item], 'remove', v.amount)
+    end
+end)
+
+-- Jail Alarm
+RegisterNetEvent('prison:server:JailAlarm', function()
+    if not AlarmActivated then
+        TriggerClientEvent('prison:client:JailAlarm', -1, true)
+        SetTimeout(5 * (60 * 1000), function()
+            TriggerClientEvent('prison:client:JailAlarm', -1, false)
+        end)
+    end
+end)
+
+-- Lockdown
+RegisterNetEvent('prison:server:SecurityLockdown', function()
+    TriggerClientEvent("prison:client:SetLockDown", -1, true)
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(v)
+        if Player ~= nil then
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                TriggerClientEvent("prison:client:PrisonBreakAlert", v)
+            end
+        end
+	end
+end)
+
+-- Gate State
+RegisterNetEvent('prison:server:SetGateHit', function(key)
+    TriggerClientEvent("prison:client:SetGateHit", -1, key, true)
+    if math.random(1, 100) <= 50 then
+        for k, v in pairs(QBCore.Functions.GetPlayers()) do
+            local Player = QBCore.Functions.GetPlayer(v)
+            if Player ~= nil then
+                if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                    TriggerClientEvent("prison:client:PrisonBreakAlert", v)
+                end
+            end
+        end
+    end
+end)
+
+-- Alarm Callback
+QBCore.Functions.CreateCallback('prison:server:IsAlarmActive', function(source, cb)
+    cb(AlarmActivated)
+end)
+
+----------------------------
+---------- LOCKERS ---------
+----------------------------
 -- Check if stash exist
 QBCore.Functions.CreateCallback('qb-prison:server:DoesStashExist', function(source, cb, stashID)
     local retval = false
