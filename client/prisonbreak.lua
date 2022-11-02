@@ -25,84 +25,77 @@ local Gates = {
 -- Events
 
 RegisterNetEvent('qb-prison:StartPrisonBreak', function()
-    local hasElecKit = QBCore.Functions.HasItem('electronickit')
-    local hasTrojan = QBCore.Functions.HasItem('trojan_usb')
-
     if currentGate ~= 0 and not securityLockdown and not Gates[currentGate].hit then
-        if hasElecKit and hasTrojan then
-            QBCore.Functions.Progressbar("hack_gate", "Setting up the prison break..", math.random(5000, 10000), false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {
-                animDict = "anim@gangops@facility@servers@",
-                anim = "hotwire",
-                flags = 16,
-            }, {}, {}, function() -- Done
-                StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                if psvar.enable then
-                    exports['ps-ui']:VarHack(function(success)
-                        if success then
-                            QBCore.Functions.Progressbar("prisonbreak", "Hacking the gate...", (Config.PrisonBreak.Time * 1000), false, true, {
-                                disableMovement = false,
-                                disableCarMovement = true,
-                                disableMouse = false,
-                                disableCombat = true,
-                            }, {
-                                animDict = "anim@gangops@facility@servers@",
-                                anim = "hotwire",
-                                flags = 0,
-                            }, {}, {}, function()
-                                ClearPedTasks(PlayerPedId())
-                                TriggerServerEvent('prison:server:RemovePrisonBreakItems')
-                                TriggerServerEvent("prison:server:SetGateHit", currentGate)
-                                TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
-                            end, function() -- Cancel
-                                QBCore.Functions.Notify("Canceled...", "error")
-                                ClearPedTasks(PlayerPedId())
-                            end)
-                        else
-                            TriggerServerEvent("prison:server:SecurityLockdown")
-                            QBCore.Functions.Notify("You failed the hack!", "error")
+        QBCore.Functions.Progressbar("hack_gate", "Setting up the prison break..", math.random(5000, 10000), false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = "anim@gangops@facility@servers@",
+            anim = "hotwire",
+            flags = 16,
+        }, {}, {}, function() -- Done
+            StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
+            if psvar.enable then
+                exports['ps-ui']:VarHack(function(success)
+                    if success then
+                        QBCore.Functions.Progressbar("prisonbreak", "Hacking the gate...", (Config.PrisonBreak.Time * 1000), false, true, {
+                            disableMovement = false,
+                            disableCarMovement = true,
+                            disableMouse = false,
+                            disableCombat = true,
+                        }, {
+                            animDict = "anim@gangops@facility@servers@",
+                            anim = "hotwire",
+                            flags = 0,
+                        }, {}, {}, function()
                             ClearPedTasks(PlayerPedId())
-                        end
-                     end, psvar.blocks, psvar.time) -- Number of Blocks, Time (seconds)
-                elseif psthermite.enable then
-                    exports['ps-ui']:Thermite(function(success)
-                        if success then
-                            QBCore.Functions.Progressbar("prisonbreak", "Hacking the gate...", (Config.PrisonBreak.Time * 1000), false, true, {
-                                disableMovement = false,
-                                disableCarMovement = true,
-                                disableMouse = false,
-                                disableCombat = true,
-                            }, {
-                                animDict = "anim@gangops@facility@servers@",
-                                anim = "hotwire",
-                                flags = 0,
-                            }, {}, {}, function()
-                                ClearPedTasks(PlayerPedId())
-                                TriggerServerEvent('prison:server:RemovePrisonBreakItems')
-                                TriggerServerEvent("prison:server:SetGateHit", currentGate)
-                                TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
-                            end, function() -- Cancel
-                                QBCore.Functions.Notify("Canceled...", "error")
-                                ClearPedTasks(PlayerPedId())
-                            end)
-                        else
-                            TriggerServerEvent("prison:server:SecurityLockdown")
-                            QBCore.Functions.Notify("You failed the hack!", "error")
+                            TriggerServerEvent('prison:server:RemovePrisonBreakItems')
+                            TriggerServerEvent("prison:server:SetGateHit", currentGate)
+                            TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
+                        end, function()
+                            QBCore.Functions.Notify("Canceled...", "error")
                             ClearPedTasks(PlayerPedId())
-                        end
-                    end, psthermite.time, psthermite.grid, psthermite.incorrect)
-                end
-            end, function() -- Cancel
-                StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
-            end)
-        else
-            QBCore.Functions.Notify(Lang:t("error.item_missing"), "error")
-        end
+                        end)
+                    else
+                        TriggerServerEvent("prison:server:SecurityLockdown")
+                        QBCore.Functions.Notify("You failed the hack!", "error")
+                        ClearPedTasks(PlayerPedId())
+                    end
+                    end, psvar.blocks, psvar.time) -- Number of Blocks, Time (seconds)
+            elseif psthermite.enable then
+                exports['ps-ui']:Thermite(function(success)
+                    if success then
+                        QBCore.Functions.Progressbar("prisonbreak", "Hacking the gate...", (Config.PrisonBreak.Time * 1000), false, true, {
+                            disableMovement = false,
+                            disableCarMovement = true,
+                            disableMouse = false,
+                            disableCombat = true,
+                        }, {
+                            animDict = "anim@gangops@facility@servers@",
+                            anim = "hotwire",
+                            flags = 0,
+                        }, {}, {}, function()
+                            ClearPedTasks(PlayerPedId())
+                            TriggerServerEvent('prison:server:RemovePrisonBreakItems')
+                            TriggerServerEvent("prison:server:SetGateHit", currentGate)
+                            TriggerServerEvent('qb-doorlock:server:updateState', Gates[currentGate].gatekey, false)
+                        end, function()
+                            QBCore.Functions.Notify("Canceled...", "error")
+                            ClearPedTasks(PlayerPedId())
+                        end)
+                    else
+                        TriggerServerEvent("prison:server:SecurityLockdown")
+                        QBCore.Functions.Notify("You failed the hack!", "error")
+                        ClearPedTasks(PlayerPedId())
+                    end
+                end, psthermite.time, psthermite.grid, psthermite.incorrect)
+            end
+        end, function() -- Cancel
+            StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
+            QBCore.Functions.Notify(Lang:t("error.cancelled"), "error")
+        end)
     end
 end)
 
