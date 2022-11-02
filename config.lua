@@ -100,6 +100,16 @@ Config.PrisonBreak = {
             time = 20,
             grid = 5,
             incorrect = 3
+        },
+        Items = {
+            [1] = {
+                item = 'trojan_usb',
+                amount = 1
+            },
+            [2] = {
+                item = 'electronickit',
+                amount = 1
+            },
         }
     }
 }
@@ -619,33 +629,33 @@ Config.Locations = {
     PrisonBreak = { -- Polyzones for prison break locations
         [1] = {
             coords = vector4(1817.47, 2602.68, 45.6, 0),
-            length = 0.6,
-            width = 0.6,
+            length = 0.5,
+            width = 0.5,
         },
         [2] = {
             coords = vector4(1819.49, 2604.7, 45.58, 0),
-            length = 0.6,
-            width = 0.6,
+            length = 0.5,
+            width = 0.5,
         },
         [3] = {
             coords = vector4(1846.01, 2604.7, 45.58, 0),
-            length = 0.6,
-            width = 0.6,
+            length = 0.5,
+            width = 0.5,
         },
         [4] = {
             coords = vector4(1843.97, 2602.67, 45.6, 0),
-            length = 0.6,
-            width = 0.6,
+            length = 0.5,
+            width = 0.5,
         },
         [5] = {
             coords = vector4(1804.78, 2616.29, 45.54, 0),
-            length = 0.6,
-            width = 0.6,
+            length = 0.5,
+            width = 0.5,
         },
         [6] = {
             coords = vector4(1804.79, 2617.49, 45.54, 0),
-            length = 0.6,
-            width = 0.6,
+            length = 0.5,
+            width = 0.5,
         },
     }
 }
