@@ -1,12 +1,8 @@
-# Support us on Ko-fi
+![Redline Studios Banner](https://i.imgur.com/VFEXnGd.png)
+# Redline Studios Discord:
+https://discord.gg/RCU9XEvnsE
 
-## - xThrasherrr
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/thrasherrr)
-
-## - xViperAG
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/xviperag)
-
-# Join the [Discord](https://discord.gg/3CXrkvQVds)
+# rs-prison 1.0
 
 ## DESCRIPTION:
 - Updated Prison Script Orignially Modified by IN1GHTM4R3
