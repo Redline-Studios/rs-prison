@@ -968,6 +968,21 @@ RegisterNetEvent('rs-prison:client:coffee', function()
 	end
 end)
 
+
+RegisterNetEvent('rs-prison:client:Slushy', function(data)
+    TriggerEvent('animations:client:EmoteCommandStart', {"drink"})
+    QBCore.Functions.Progressbar("drink_something", "Drinking Slushy..", 5000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+        disableMouse = false,
+        disableCombat = true,
+    }, {}, {}, {}, function() -- Done
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items[itemName], "remove")
+        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+        TriggerServerEvent("consumables:server:addThirst", QBCore.Functions.GetPlayerData().metadata["thirst"] + math.random(35, 54))
+    end)
+end)
+
 -------------------------------
 -- CRAFTING MENU AND EVENTS --
 -------------------------------

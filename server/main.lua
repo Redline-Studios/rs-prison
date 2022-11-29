@@ -126,6 +126,16 @@ QBCore.Functions.CreateCallback('rs-prison:server:CraftingMaterials', function(s
     end
 end)
 
+
+
+QBCore.Functions.CreateUseableItem("slushy", function(source, item)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
+        TriggerClientEvent("rs-prison:client:Slushy", src, item.name)
+    end
+end)
+
 ----------------------------
 ------- PRISON BREAK -------
 ----------------------------
