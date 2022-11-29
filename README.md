@@ -2,12 +2,7 @@
 # Redline Studios Discord:
 https://discord.gg/RCU9XEvnsE
 
-# rs-prison 1.0
-
-## DESCRIPTION:
-- Updated Prison Script Orignially Modified by IN1GHTM4R3
-- Forked & Modified to v1.3: xThrasherrr#6666 and xViperAG#3029
-
+# Redline Studios Prison Script
 -----------------------------------------------------------------------------------------------------------------
 
 ## FEATURES:
@@ -88,29 +83,6 @@ https://discord.gg/RCU9XEvnsE
 
 ## Credits:
 - IN1GHTM4R3 - https://github.com/IN1GHTM4R3/qb-prison - The Original Resource
-- Primal#4155 - Original Targeting
 - xViperAG https://github.com/xViperAG - New rework
 - xThrasherrr https://github.com/xThrasherrr - New Rework
-- NoobySloth - Created Prison Shank Model
-- QB-Core Framework - For creating the framework!
-- Jimathy666 - Inspiration on the Locker Spawn (jim-mechanic)
-
 -----------------------------------------------------------------------------------------------------------------
-
-# License
-
-    QBCore Framework
-    Copyright (C) 2021 Joshua Eger
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>
