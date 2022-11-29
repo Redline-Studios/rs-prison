@@ -2,7 +2,7 @@ local sleep = 1000
 local resting = false
 local training = false
 
-RegisterNetEvent("qb-prison:client:DoChinUp", function()
+RegisterNetEvent("rs-prison:client:DoChinUp", function()
     if not training and not resting then
         Hang()
     else
@@ -55,7 +55,7 @@ exports['qb-target']:AddTargetModel({-1978741854, 2057317573, -232023078}, {
     options = {
         {
             type = "client",
-            event = "qb-prison:client:DoYoga",
+            event = "rs-prison:client:DoYoga",
             icon = "fas fa-yin-yang",
             label = "Do yoga",
         },
@@ -63,7 +63,7 @@ exports['qb-target']:AddTargetModel({-1978741854, 2057317573, -232023078}, {
     distance = 2.5
 })
 
-RegisterNetEvent('qb-prison:client:DoYoga', function()
+RegisterNetEvent('rs-prison:client:DoYoga', function()
     local ped = PlayerPedId()
     local coords = GetEntityCoords(ped)
 

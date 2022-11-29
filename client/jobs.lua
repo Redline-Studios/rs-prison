@@ -39,21 +39,21 @@ end
 local function GetRandomCraftingItem(job)
     if job == 'janitor' then
         local JanitorItem = math.random(1, #Config.JanitorItems)
-        TriggerServerEvent('qb-prison:server:GetCraftingItems', Config.JanitorItems[JanitorItem].item, Config.JanitorItems[JanitorItem].amount)
+        TriggerServerEvent('rs-prison:server:GetCraftingItems', Config.JanitorItems[JanitorItem].item, Config.JanitorItems[JanitorItem].amount)
 
         if Config.Debug then
             print("Received "..Config.JanitorItems[JanitorItem].amount.."x "..Config.JanitorItems[JanitorItem].item.." from cleaning")
         end
     elseif job == 'cook' then
         local CookItem = math.random(1, #Config.CookItems)
-        TriggerServerEvent('qb-prison:server:GetCraftingItems', Config.CookItems[CookItem].item, Config.CookItems[CookItem].amount)
+        TriggerServerEvent('rs-prison:server:GetCraftingItems', Config.CookItems[CookItem].item, Config.CookItems[CookItem].amount)
 
         if Config.Debug then
             print("Received "..Config.CookItems[CookItem].amount.."x "..Config.CookItems[CookItem].item.." from cooking")
         end
     elseif job == 'electrician' then
         local ElectricianItem = math.random(1, #Config.ElectricianItems)
-        TriggerServerEvent('qb-prison:server:GetCraftingItems', Config.ElectricianItems[ElectricianItem].item, Config.ElectricianItems[ElectricianItem].amount)
+        TriggerServerEvent('rs-prison:server:GetCraftingItems', Config.ElectricianItems[ElectricianItem].item, Config.ElectricianItems[ElectricianItem].amount)
 
         if Config.Debug then
             print("Received "..Config.ElectricianItems[ElectricianItem].amount.."x "..Config.ElectricianItems[ElectricianItem].item.." from fixing electrical")

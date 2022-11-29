@@ -28,7 +28,7 @@ RegisterNetEvent('prison:server:SaveJailItems', function()
     end
 end)
 
-RegisterNetEvent('qb-prison:server:getCommissary', function()
+RegisterNetEvent('rs-prison:server:getCommissary', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     Player.Functions.AddMoney('cash', Config.PrisonWage)
@@ -68,7 +68,7 @@ end)
 ---------------------
 
 -- Get Random Crafting Item
-RegisterNetEvent('qb-prison:server:GetCraftingItems', function(item, amount)
+RegisterNetEvent('rs-prison:server:GetCraftingItems', function(item, amount)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local itemamount = tonumber(amount)
@@ -83,7 +83,7 @@ RegisterNetEvent('qb-prison:server:GetCraftingItems', function(item, amount)
 end)
 
 -- Get Crafted Item
-RegisterNetEvent('qb-prison:server:GetCraftedItem', function(data)
+RegisterNetEvent('rs-prison:server:GetCraftedItem', function(data)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local item = data
@@ -97,7 +97,7 @@ RegisterNetEvent('qb-prison:server:GetCraftedItem', function(data)
 end)
 
 -- Remove Crafting Materials
-RegisterNetEvent('qb-prison:server:RemoveCraftingItems', function(item)
+RegisterNetEvent('rs-prison:server:RemoveCraftingItems', function(item)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
@@ -108,7 +108,7 @@ RegisterNetEvent('qb-prison:server:RemoveCraftingItems', function(item)
 end)
 
 -- Checks for Materials
-QBCore.Functions.CreateCallback('qb-prison:server:CraftingMaterials', function(source, cb, materials)
+QBCore.Functions.CreateCallback('rs-prison:server:CraftingMaterials', function(source, cb, materials)
     local src = source
     local hasItems = false
     local matscheck = 0
@@ -187,7 +187,7 @@ end)
 ---------- LOCKERS ---------
 ----------------------------
 -- Check if stash exist
-QBCore.Functions.CreateCallback('qb-prison:server:DoesStashExist', function(source, cb, stashID)
+QBCore.Functions.CreateCallback('rs-prison:server:DoesStashExist', function(source, cb, stashID)
     local retval = false
     local result = MySQL.Sync.fetchSingle('SELECT * from stashitems WHERE stash = ?', {stashID})
 

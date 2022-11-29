@@ -17,7 +17,7 @@ local TargetsTable = {}
 
 
 -------------------------------------------
------- ONLY USED FOR QB-PRISONJOBS --------
+------ ONLY USED FOR rs-prisonJOBS --------
 -------------------------------------------
 local function GetJailTime()
 	return jailTime
@@ -165,13 +165,13 @@ local function CreateAllTargets()
 				options = {
 				{
 					type = "client",
-					event = "qb-prison:client:checkTime",
+					event = "rs-prison:client:checkTime",
 					icon = "fas fa-clock",
 					label = "Check Jail Time",
 				},
 				{
 					type = "client",
-					event = "qb-prison:client:jobMenu",
+					event = "rs-prison:client:jobMenu",
 					icon = "fas fa-cash-register",
 					label = "Choose Another Job",
 				},
@@ -191,7 +191,7 @@ local function CreateAllTargets()
 					options = {
 					{
 						type = "client",
-						event = "qb-prison:StartPrisonBreak",
+						event = "rs-prison:StartPrisonBreak",
 						icon = "fas fa-laptop-code",
 						label = "Prison Break",
 						canInteract = function()
@@ -216,7 +216,7 @@ local function CreateAllTargets()
 				options = {
 				{
 					type = "client",
-					event = "qb-prison:client:useCanteen",
+					event = "rs-prison:client:useCanteen",
 					icon = "fas fa-utensils",
 					label = "Open Canteen",
 				},
@@ -235,7 +235,7 @@ local function CreateAllTargets()
 				options = {
 				{
 					type = "client",
-					event = "qb-prison:client:slushy",
+					event = "rs-prison:client:slushy",
 					icon = "fas fa-wine-bottle",
 					label = "Make Slushy",
 				},
@@ -254,7 +254,7 @@ local function CreateAllTargets()
 				options = {
 				{
 					type = "client",
-					event = "qb-prison:client:coffee",
+					event = "rs-prison:client:coffee",
 					icon = "fas fa-mug-hot",
 					label = "Make Coffee",
 				},
@@ -273,7 +273,7 @@ local function CreateAllTargets()
 				options = {
 				{
 					type = "client",
-					event = "qb-prison:client:soda",
+					event = "rs-prison:client:soda",
 					icon = "fas fa-cash-register",
 					label = "Make Soda",
 				},
@@ -293,7 +293,7 @@ local function CreateAllTargets()
 					options = {
 					{
 						type = "client",
-						event = "qb-prison:CraftingMenu",
+						event = "rs-prison:CraftingMenu",
 						icon = "fas fa-toolbox",
 						label = "Prison Crafting",
 					},
@@ -315,7 +315,7 @@ local function CreateAllTargets()
 				options = {
 					{
 						type = "client",
-						event = "qb-prison:client:DoChinUp",
+						event = "rs-prison:client:DoChinUp",
 						icon = "fas fa-dumbbell",
 						label = "Do Chin-Ups",
 						canInteract = function()
@@ -376,7 +376,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 		end
 	end)
 
-	TriggerEvent('qb-prison:client:SpawnLockers')
+	TriggerEvent('rs-prison:client:SpawnLockers')
 	PlayerJob = QBCore.Functions.GetPlayerData().job
 end)
 
@@ -397,7 +397,7 @@ AddEventHandler('onResourceStart', function(resourceName)
 		TriggerEvent('prison:client:JailAlarm', true)
 	end)
 
-	TriggerEvent('qb-prison:client:SpawnLockers')
+	TriggerEvent('rs-prison:client:SpawnLockers')
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
@@ -413,13 +413,13 @@ RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
 	currentJob = nil
 	RemoveBlip(currentBlip)
 	DestroyAllTargets()
-	TriggerEvent('qb-prison:client:RemoveLockers')
+	TriggerEvent('rs-prison:client:RemoveLockers')
 end)
 
 AddEventHandler('onResourceStop', function(resourceName)
     if GetCurrentResourceName() == resourceName then
 		DestroyAllTargets()
-		TriggerEvent('qb-prison:client:RemoveLockers')
+		TriggerEvent('rs-prison:client:RemoveLockers')
     end
 end)
 
@@ -536,7 +536,7 @@ end)
 ---------------------------------------------------
 
 -- Job Menu
-RegisterNetEvent('qb-prison:client:jobMenu', function()
+RegisterNetEvent('rs-prison:client:jobMenu', function()
     if inJail then
 
 		pjobMenu = {
@@ -551,7 +551,7 @@ RegisterNetEvent('qb-prison:client:jobMenu', function()
 				icon = "fas fa-bolt",
 				params = {
 					isServer = false,
-					event = "qb-prison:jobapplyElectrician",
+					event = "rs-prison:jobapplyElectrician",
 				}
 			},
 			{
@@ -560,7 +560,7 @@ RegisterNetEvent('qb-prison:client:jobMenu', function()
 				icon = "fas fa-utensils",
 				params = {
 					isServer = false,
-					event = "qb-prison:jobapplyCook",
+					event = "rs-prison:jobapplyCook",
 				}
 			},
 			{
@@ -569,7 +569,7 @@ RegisterNetEvent('qb-prison:client:jobMenu', function()
 				icon = "fas fa-broom",
 				params = {
 					isServer = false,
-					event = "qb-prison:jobapplyJanitor",
+					event = "rs-prison:jobapplyJanitor",
 				}
 			},
 			{
@@ -598,7 +598,7 @@ end)
 -- JOB EVENTS --
 ----------------
 
-RegisterNetEvent('qb-prison:jobapplyElectrician', function(args)
+RegisterNetEvent('rs-prison:jobapplyElectrician', function(args)
 	local pos = GetEntityCoords(PlayerPedId())
 	inRange = false
 
@@ -620,7 +620,7 @@ RegisterNetEvent('qb-prison:jobapplyElectrician', function(args)
 			end
 		else
 			QBCore.Functions.Notify('Job Not Available')
-			TriggerEvent('qb-prison:client:jobMenu')
+			TriggerEvent('rs-prison:client:jobMenu')
 		end
 	else
 		QBCore.Functions.Notify('Not Close Enough To Pay Phone')
@@ -631,7 +631,7 @@ RegisterNetEvent('qb-prison:jobapplyElectrician', function(args)
 	end
 end)
 
-RegisterNetEvent('qb-prison:jobapplyCook', function(args)
+RegisterNetEvent('rs-prison:jobapplyCook', function(args)
 	local pos = GetEntityCoords(PlayerPedId())
 	inRange = false
 
@@ -653,7 +653,7 @@ RegisterNetEvent('qb-prison:jobapplyCook', function(args)
 			end
 		else
 			QBCore.Functions.Notify('Job Not Available')
-			TriggerEvent('qb-prison:client:jobMenu')
+			TriggerEvent('rs-prison:client:jobMenu')
 		end
 	else
 		QBCore.Functions.Notify('Not Close Enough To Pay Phone')
@@ -664,7 +664,7 @@ RegisterNetEvent('qb-prison:jobapplyCook', function(args)
 	end
 end)
 
-RegisterNetEvent('qb-prison:jobapplyJanitor', function(args)
+RegisterNetEvent('rs-prison:jobapplyJanitor', function(args)
 	local pos = GetEntityCoords(PlayerPedId())
 	inRange = false
 
@@ -686,7 +686,7 @@ RegisterNetEvent('qb-prison:jobapplyJanitor', function(args)
 			end
 		else
 			QBCore.Functions.Notify('Job Not Available')
-			TriggerEvent('qb-prison:client:jobMenu')
+			TriggerEvent('rs-prison:client:jobMenu')
 		end
 	else
 		QBCore.Functions.Notify('Not Close Enough To Pay Phone')
@@ -702,7 +702,7 @@ end)
 -------------------------------
 
 -- Check Time
-RegisterNetEvent('qb-prison:client:checkTime', function()
+RegisterNetEvent('rs-prison:client:checkTime', function()
 	if inJail then
 		local pos = GetEntityCoords(PlayerPedId())
 		if #(pos - vector3(Config.Locations["freedom"].coords.x, Config.Locations["freedom"].coords.y, Config.Locations["freedom"].coords.z)) < 1.5 then
@@ -716,7 +716,7 @@ end)
 ---------- DRINK MACHINES  ---------
 ------------------------------------
 -- Use Canteen
-RegisterNetEvent('qb-prison:client:useCanteen', function()
+RegisterNetEvent('rs-prison:client:useCanteen', function()
 	if inJail then
 		local ShopItems = {}
 		ShopItems.label = "Prison Canteen"
@@ -729,7 +729,7 @@ RegisterNetEvent('qb-prison:client:useCanteen', function()
 end)
 
 -- Slushy Machine
-RegisterNetEvent('qb-prison:client:slushy', function()
+RegisterNetEvent('rs-prison:client:slushy', function()
 	if inJail then
 		Wait(1000)
 		local ped = PlayerPedId()
@@ -843,7 +843,7 @@ function SlushyTime(success)
 end
 
 -- Soda Machine
-RegisterNetEvent('qb-prison:client:soda', function()
+RegisterNetEvent('rs-prison:client:soda', function()
 	if inJail then
 		Wait(1000)
 		local ped = PlayerPedId()
@@ -956,7 +956,7 @@ function SodaTime(success)
 	end
 end
 
-RegisterNetEvent('qb-prison:client:coffee', function()
+RegisterNetEvent('rs-prison:client:coffee', function()
 	if inJail then
 		local CoffeeItems = {}
 		CoffeeItems.label = "Prison Coffee"
@@ -972,7 +972,7 @@ end)
 -- CRAFTING MENU AND EVENTS --
 -------------------------------
 
-RegisterNetEvent('qb-prison:CraftingMenu', function()
+RegisterNetEvent('rs-prison:CraftingMenu', function()
 
 	local craftingheader = {
 	  {
@@ -995,7 +995,7 @@ RegisterNetEvent('qb-prison:CraftingMenu', function()
 		item.text = text
 		item.icon = v.receive
 		item.params = {
-			event = 'qb-prison:CraftItem',
+			event = 'rs-prison:CraftItem',
 			args = {
 			item = k
 			}
@@ -1020,8 +1020,8 @@ local function CraftItem(item)
 		anim = "fixing_a_ped",
 		}, {}, {}, function()
 		QBCore.Functions.Notify("Crafted "..item, 'success')
-		TriggerServerEvent('qb-prison:server:GetCraftedItem', Config.CraftingItems[item].receive)
-		TriggerServerEvent('qb-prison:server:RemoveCraftingItems', item)
+		TriggerServerEvent('rs-prison:server:GetCraftedItem', Config.CraftingItems[item].receive)
+		TriggerServerEvent('rs-prison:server:RemoveCraftingItems', item)
 		TriggerEvent('animations:client:EmoteCommandStart', {"c"})
 		ClearPedTasks(PlayerPedId())
 	end, function()
@@ -1035,8 +1035,8 @@ local function CraftItem(item)
 end
 
 -- Uses Callback to Check for Materials
-RegisterNetEvent('qb-prison:CraftItem', function(data)
-	QBCore.Functions.TriggerCallback("qb-prison:server:CraftingMaterials", function(hasMaterials)
+RegisterNetEvent('rs-prison:CraftItem', function(data)
+	QBCore.Functions.TriggerCallback("rs-prison:server:CraftingMaterials", function(hasMaterials)
 		if (hasMaterials) then
 			CraftItem(data.item)
 		else

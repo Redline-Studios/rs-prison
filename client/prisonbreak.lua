@@ -24,7 +24,7 @@ local Gates = {
 
 -- Events
 
-RegisterNetEvent('qb-prison:StartPrisonBreak', function()
+RegisterNetEvent('rs-prison:StartPrisonBreak', function()
     if currentGate ~= 0 and not securityLockdown and not Gates[currentGate].hit then
         QBCore.Functions.Progressbar("hack_gate", "Setting up the prison break..", math.random(5000, 10000), false, true, {
             disableMovement = true,

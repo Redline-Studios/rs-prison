@@ -16,7 +16,7 @@ end
 -- PRISON STASH  --
 -------------------
 
-RegisterNetEvent('qb-prison:client:Locker', function()
+RegisterNetEvent('rs-prison:client:Locker', function()
     if inJail then
         QBCore.Functions.Progressbar('opening_prisonlocker', 'Opening the locker...', 2000, false, true, {
             disableMovement = true,
@@ -41,7 +41,7 @@ end)
 -- FORCE OPEN STASH (POLICE ONLY) --
 ------------------------------------
 
-RegisterNetEvent('qb-prison:client:ForceOpenLocker', function(data)
+RegisterNetEvent('rs-prison:client:ForceOpenLocker', function(data)
     local prisonStash = QBCore.Functions.GetPlayerData().citizenid
     local locker = exports['qb-input']:ShowInput({
         header = Lang:t('info.prison_stash'),
@@ -60,7 +60,7 @@ RegisterNetEvent('qb-prison:client:ForceOpenLocker', function(data)
         if Config.Debug then
             print("prisonstash_"..locker.citizenid)
         end
-        QBCore.Functions.TriggerCallback('qb-prison:server:DoesStashExist', function(stashExist)
+        QBCore.Functions.TriggerCallback('rs-prison:server:DoesStashExist', function(stashExist)
             if stashExist then
                 QBCore.Functions.Progressbar('opening_prisonlocker', 'Opening the locker...', 2000, false, true, {
                     disableMovement = true,
@@ -91,7 +91,7 @@ end)
 -- LOCKER SPAWN / REMOVE --
 ---------------------------
 
-RegisterNetEvent('qb-prison:client:RemoveLockers', function()
+RegisterNetEvent('rs-prison:client:RemoveLockers', function()
     for k,v in pairs(locker) do
         DeleteObject(v)
     end
@@ -101,7 +101,7 @@ RegisterNetEvent('qb-prison:client:RemoveLockers', function()
     end
 end)
 
-RegisterNetEvent('qb-prison:client:SpawnLockers', function()
+RegisterNetEvent('rs-prison:client:SpawnLockers', function()
     if GetLockerConfig() == 'gabz' then
 	    for k, v in pairs(Config.GabzLockers) do
 	    	RequestModel(`p_cs_locker_01_s`)
@@ -121,7 +121,7 @@ RegisterNetEvent('qb-prison:client:SpawnLockers', function()
                 options = {
                     {
                         type = "client",
-                        event = "qb-prison:client:Locker",
+                        event = "rs-prison:client:Locker",
                         icon = "fas fa-box-open",
                         label = "Open Prisoner Stash",
                         canInteract = function()
@@ -134,7 +134,7 @@ RegisterNetEvent('qb-prison:client:SpawnLockers', function()
                     },
                     {
                         type = "client",
-                        event = "qb-prison:client:ForceOpenLocker",
+                        event = "rs-prison:client:ForceOpenLocker",
                         icon = "fas fa-box-open",
                         label = "Force Open Locker",
                         job = {
